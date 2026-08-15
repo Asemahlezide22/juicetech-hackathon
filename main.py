@@ -30,23 +30,61 @@ API_PORT = 8000
 WEB_PORT = 8080
 
 
+def venv_python() -> Path | None:
+    """The Python inside backend/.venv, or None if it does not exist yet."""
+    for candidate in (
+        BACKEND / ".venv" / "Scripts" / "python.exe",  # Windows
+        BACKEND / ".venv" / "bin" / "python",          # macOS / Linux
+    ):
+        if candidate.exists():
+            return candidate
+    return None
+
+
 def find_backend_python() -> Path:
-    """The Python inside backend/.venv, which has FastAPI installed."""
-    candidate = BACKEND / ".venv" / "Scripts" / "python.exe"  # Windows
-    if candidate.exists():
-        return candidate
+    """The backend interpreter, creating it on first run.
 
-    candidate = BACKEND / ".venv" / "bin" / "python"  # macOS / Linux
-    if candidate.exists():
-        return candidate
+    backend/.venv is deliberately not in git, so a fresh clone has no
+    virtualenv and no dependencies. Rather than making somebody read the
+    README before anything works, build it here — this runs once, then
+    every later start finds it already there.
+    """
+    existing = venv_python()
+    if existing is not None:
+        return existing
 
-    sys.exit(
-        "Could not find backend/.venv.\n"
-        "Create it once with:\n"
-        f"    python -m venv {BACKEND / '.venv'}\n"
-        f"    {BACKEND / '.venv' / 'Scripts' / 'python.exe'} -m pip install -r "
-        f"{BACKEND / 'requirements.txt'}"
+    print("  First run: setting up backend/.venv (this takes a minute)…")
+
+    result = subprocess.run(
+        [sys.executable, "-m", "venv", str(BACKEND / ".venv")],
+        capture_output=True,
+        text=True,
     )
+    if result.returncode != 0:
+        sys.exit(
+            "Could not create backend/.venv.\n"
+            f"{result.stderr.strip()}\n\n"
+            "Check that Python 3.10+ is installed and on your PATH."
+        )
+
+    python = venv_python()
+    if python is None:
+        sys.exit("backend/.venv was created but no interpreter was found inside it.")
+
+    print("  Installing dependencies…")
+    result = subprocess.run(
+        [str(python), "-m", "pip", "install", "-q", "-r", str(BACKEND / "requirements.txt")],
+    )
+    if result.returncode != 0:
+        # Leave the half-built venv in place; deleting it would also throw away
+        # whatever did install, making the retry slower.
+        sys.exit(
+            "Dependency install failed. Fix the error above, then run:\n"
+            f"    {python} -m pip install -r {BACKEND / 'requirements.txt'}"
+        )
+
+    print("  Setup complete.\n")
+    return python
 
 
 def find_bun() -> Path | None:

@@ -1,5 +1,75 @@
 # Juice Tech Hub
 
+**Pay for the time, share the time.** A South African shared power bank
+network — rentals, event charging and digital advertising.
+
+---
+
+## Quick start
+
+You need **Python 3.10 or newer**. Nothing else — no Node, no npm, no build step.
+
+```bash
+git clone https://github.com/Cekiso/charge-and-go-share.git
+cd charge-and-go-share
+python main.py
+```
+
+On Windows use `py main.py` if `python` is not on your PATH.
+
+The first run creates `backend/.venv` and installs dependencies automatically
+(about a minute). Every run after that starts immediately.
+
+Then open:
+
+| | |
+|---|---|
+| **The site** | http://localhost:8000 |
+| **API documentation** | http://localhost:8000/docs |
+
+Press `Ctrl+C` to stop.
+
+### Running the tests
+
+With the site running, in a second terminal:
+
+```bash
+cd backend && ../backend/.venv/Scripts/python.exe test_pages.py
+```
+
+| Suite | Checks | Needs the server? |
+|---|---|---|
+| `test_pages.py` | 50 — every page, link and asset loads | yes |
+| `smoke_test.py` | 45 — the full rental journey | yes |
+| `test_late_fees.py` | 14 — late-fee rules | no |
+
+Each test script re-launches itself under `backend/.venv`, so any Python works.
+
+### Opening it in PyCharm
+
+Open this folder, then pick **Juice Tech** from the run dropdown and press ▶.
+
+### What is where
+
+```
+main.py       Start everything. The only file you need to run.
+backend/      The entire app — Python API + HTML pages. See backend/README.md.
+src/          The original React build. No longer used; kept for reference.
+```
+
+`backend/README.md` documents the API, the business rules and how to add a page.
+
+### The old React site
+
+Superseded by the Python build, but still runnable if you have
+[Bun](https://bun.sh) installed:
+
+```bash
+python main.py --with-react
+```
+
+---
+
 # Juice Tech — Lovable.ai  Build Prompt
 
 **How to use this:** Copy everything below the line into a single prompt in Lovable.ai or Bolt.ai. Both tools work best with one long, structured prompt like this rather than several short ones — paste it as your first message to start the build.
