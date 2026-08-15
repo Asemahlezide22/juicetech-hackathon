@@ -154,6 +154,24 @@ def clear_stale_vite_temp() -> None:
         print(f"  Warning: could not remove {stale}: {exc}")
 
 
+def lan_address() -> str | None:
+    """This machine's address on the local network, or None if offline.
+
+    Opening a UDP socket to a public address makes the OS pick the interface
+    it would actually route through — which is the one a phone on the same
+    wifi can reach. Nothing is sent; UDP needs no handshake.
+    """
+    import socket
+
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.settimeout(0.4)
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+    except OSError:
+        return None
+
+
 def main() -> int:
     with_react = "--with-react" in sys.argv
     python = find_backend_python()
@@ -165,13 +183,26 @@ def main() -> int:
     print("=" * 58)
 
     # --- The site + API, both served by Python ----------------------------
+    # Bound to 0.0.0.0, not localhost, so a phone on the same wifi can open
+    # the site and the station QR codes actually scan. That does mean anyone
+    # on this network can reach it — which is the point at a demo, and not
+    # something to leave running on a café connection.
     api = subprocess.Popen(
-        [str(python), "-m", "uvicorn", "app.main:app", "--reload", "--port", str(API_PORT)],
+        [str(python), "-m", "uvicorn", "app.main:app", "--reload",
+         "--host", "0.0.0.0", "--port", str(API_PORT)],
         cwd=BACKEND,
     )
     processes.append(("Website", api))
     print(f"  Website  http://localhost:{API_PORT}")
     print(f"  API docs http://localhost:{API_PORT}/docs")
+
+    lan = lan_address()
+    if lan:
+        print()
+        print(f"  On your phone (same wifi):  http://{lan}:{API_PORT}")
+        print(f"  Scan the station QR from:   http://{lan}:{API_PORT}/how-it-works")
+        print("  Open the site at that address first — the QR encodes")
+        print("  whatever host you loaded the page from.")
 
     # --- Legacy React site, only on request -------------------------------
     if with_react:

@@ -7,6 +7,23 @@
   <p class="eyebrow">How it works</p>
   <h1>Scan, verify, pay, <span class="accent">charge.</span></h1>
   <p class="lede">Eight steps from a flat phone to a charged one.</p>
+
+  <div class="qr-panel">
+    <img class="qr-code" src="/kiosk/qr.svg?station={{ demo_station }}"
+         width="200" height="200"
+         alt="QR code that opens the Juice Tech rental screen for station {{ demo_station }}">
+    <div class="qr-copy">
+      <p class="qr-lead">Point your camera here.</p>
+      <p class="qr-note">
+        This is the code printed on the cabinet. Scanning it opens the rental
+        screen for <strong>{{ demo_station }}</strong> — the same one you would
+        get standing in front of the station.
+      </p>
+      <a class="btn btn-primary" href="/kiosk?station={{ demo_station }}">
+        Or open it here
+      </a>
+    </div>
+  </div>
 </section>
 
 <section class="section">

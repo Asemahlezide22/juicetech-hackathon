@@ -263,6 +263,32 @@ def pay_screen(request: Request, reference: str, db: DBSession = Depends(get_ses
     )
 
 
+@router.get("/kiosk/qr.svg", include_in_schema=False)
+def station_qr(request: Request, station: str = cfg.DEFAULT_STATION):
+    """The QR that would be printed on a physical cabinet.
+
+    Built from request.base_url rather than a hard-coded host, so whatever
+    address the page was loaded from is what the code encodes. Open the site
+    on the machine's network address and the QR points there too — which is
+    what makes it scannable from someone else's phone rather than only from
+    the laptop it was generated on.
+    """
+    st = svc.station(station)
+    url = str(request.base_url).rstrip("/") + f"/kiosk?station={st['id']}"
+
+    qr = qrcode.QRCode(box_size=10, border=2)
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    buffer = io.BytesIO()
+    qr.make_image(image_factory=SvgPathImage).save(buffer)
+    return Response(
+        content=buffer.getvalue(),
+        media_type="image/svg+xml",
+        headers={"Cache-Control": "no-store"},   # the host can change between loads
+    )
+
+
 @router.get("/kiosk/{reference}/qr.svg", include_in_schema=False)
 def pay_qr(request: Request, reference: str):
     """QR for Scan to Pay. Points at this same demo, on the phone."""

@@ -77,7 +77,12 @@ def rent(request: Request):
 @router.get("/how-it-works", include_in_schema=False)
 def how_it_works(request: Request):
     # The only page that earns the full eight-step version.
-    return render(request, "how-it-works.html", steps=content.RENT_STEPS_DETAIL)
+    return render(
+        request,
+        "how-it-works.html",
+        steps=content.RENT_STEPS_DETAIL,
+        demo_station="JUICE-QR-001",
+    )
 
 
 @router.get("/return", include_in_schema=False)
