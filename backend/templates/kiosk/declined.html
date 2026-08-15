@@ -1,0 +1,32 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Payment declined | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 3 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<div class="k-declined">
+  <div class="k-cross" aria-hidden="true">&times;</div>
+  <h1 class="k-h1 k-center">Demo payment declined. No money was charged.</h1>
+  <p class="k-center k-muted">Reference {{ rental.reference }}</p>
+
+  <div class="k-pay-actions">
+    <form method="post" action="/kiosk/{{ rental.reference }}/payment">
+      <input type="hidden" name="method" value="{{ rental.payment_method or 'card' }}">
+      <button class="k-btn k-btn-primary k-btn-xl" type="submit">Try Again</button>
+    </form>
+
+    <a class="k-btn" href="/kiosk/{{ rental.reference }}/payment">Choose Another Method</a>
+
+    <form method="post" action="/kiosk/{{ rental.reference }}/pay/cancel">
+      <button class="k-btn k-btn-ghost" type="submit">Cancel Rental</button>
+    </form>
+  </div>
+
+  <p class="k-note k-center">
+    Nothing was charged, and the power bank that was being held has been
+    returned to the station.
+  </p>
+</div>
+
+{% endblock %}

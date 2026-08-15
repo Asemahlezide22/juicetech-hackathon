@@ -1,0 +1,59 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Demo receipt {{ rental.reference }} | Juice Tech{% endblock %}
+
+{% block content %}
+
+<article class="k-receipt" id="receipt">
+
+  <header class="k-receipt-head">
+    <svg class="k-receipt-logo" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="6" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M25 12h3v8h-3z" fill="currentColor"/>
+      <path d="M15 9l-6 9h4.5l-1.5 6 6-9h-4.5z" fill="currentColor"/>
+    </svg>
+    <span class="k-receipt-brand">JUICE <strong>TECH</strong></span>
+    <p class="k-receipt-title">HACKATHON DEMO RECEIPT</p>
+  </header>
+
+  <dl class="k-receipt-lines">
+    <div><dt>Customer</dt><dd>{{ rental.name or "—" }}</dd></div>
+    <div><dt>Rental reference</dt><dd>{{ rental.reference }}</dd></div>
+    <div><dt>Station ID</dt><dd>{{ rental.station_id }}</dd></div>
+    <div><dt>Power bank</dt><dd>{{ rental.bank_id or "—" }}</dd></div>
+    <div><dt>Rental duration</dt><dd>{{ plan.label if plan else "—" }}</dd></div>
+
+    <div class="k-receipt-rule"></div>
+
+    <div><dt>Rental fee</dt><dd>R{{ rental.fee }}</dd></div>
+    <div><dt>Refundable deposit</dt><dd>R{{ rental.deposit }}</dd></div>
+    <div class="k-receipt-total"><dt>Total simulated payment</dt><dd>R{{ total }}</dd></div>
+
+    <div class="k-receipt-rule"></div>
+
+    <div><dt>Started</dt>
+      <dd>{{ rental.started_at.strftime("%d %b %Y, %H:%M") if rental.started_at else "—" }}</dd></div>
+    <div><dt>Due back</dt>
+      <dd>{{ rental.due_at.strftime("%d %b %Y, %H:%M") if rental.due_at else "—" }}</dd></div>
+    <div><dt>Returned</dt>
+      <dd>{{ rental.returned_at.strftime("%d %b %Y, %H:%M") if rental.returned_at else "Not yet returned" }}</dd></div>
+
+    <div class="k-receipt-rule"></div>
+
+    <div><dt>Payment status</dt><dd class="k-status-paid">PAID — SIMULATED</dd></div>
+    <div><dt>Rental status</dt><dd>{{ status_label }}</dd></div>
+    <div><dt>Deposit refund</dt>
+      <dd>{% if rental.refunded %}REFUNDED — SIMULATED{% else %}Held until return{% endif %}</dd></div>
+  </dl>
+
+  <p class="k-receipt-foot">{{ disclaimer }}</p>
+</article>
+
+<div class="k-pay-actions k-noprint">
+  <button class="k-btn k-btn-primary k-btn-xl" type="button" onclick="window.print()">
+    Print / Save Receipt
+  </button>
+  <a class="k-btn" href="/kiosk?station={{ rental.station_id }}">Start Another Rental</a>
+  <a class="k-btn k-btn-ghost" href="/return-power-bank">Return a Power Bank</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "kiosk/base.html" %}
+{% block title %}DemoPay | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 3 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<div class="k-pay">
+
+  <div class="k-pay-head">
+    <h1>JUICE TECH <span>DemoPay</span></h1>
+    <p class="k-pay-method">{{ method.label }}</p>
+  </div>
+
+  <div class="k-demo-banner k-demo-banner-lg">HACKATHON DEMO — NO REAL PAYMENT</div>
+
+  <dl class="k-order">
+    <div><dt>Order reference</dt><dd>{{ rental.reference }}</dd></div>
+    <div><dt>Rental period</dt><dd>{{ plan.label if plan else "—" }}</dd></div>
+    <div><dt>Rental fee</dt><dd>R{{ rental.fee }}</dd></div>
+    <div><dt>Refundable deposit</dt><dd>R{{ rental.deposit }}</dd></div>
+    <div class="k-order-total"><dt>Total</dt><dd>R{{ total }}</dd></div>
+  </dl>
+
+  {% if rental.payment_method == "card" %}
+    <section class="k-card-panel">
+      <h2 class="k-h2">Test card</h2>
+      <p class="k-warn">
+        Only use the test details shown below. Do not enter real banking
+        information.
+      </p>
+
+      <dl class="k-testcard">
+        <div><dt>Card number</dt><dd>{{ card.number }}</dd></div>
+        <div><dt>Expiry</dt><dd>{{ card.expiry }}</dd></div>
+        <div><dt>CVV</dt><dd>{{ card.cvv }}</dd></div>
+        <div><dt>Cardholder</dt><dd>{{ card.holder }}</dd></div>
+      </dl>
+
+      <p class="k-note">
+        These values are fixed and displayed on purpose. Nothing is typed,
+        transmitted or stored — the demo never handles card data at all.
+      </p>
+    </section>
+
+  {% elif rental.payment_method == "scan" %}
+    <section class="k-scan">
+      <h2 class="k-h2">Scan to Pay</h2>
+      <img class="k-qr" src="/kiosk/{{ rental.reference }}/qr.svg"
+           alt="Demo QR code for rental {{ rental.reference }}" width="220" height="220">
+
+      <p class="k-countdown">
+        Expires in <strong id="countdown" data-minutes="{{ scan_minutes }}">{{ scan_minutes }}:00</strong>
+      </p>
+
+      <p class="k-scan-summary">
+        {{ plan.label if plan else "Rental" }} &middot; <strong>R{{ total }}</strong>
+      </p>
+
+      <p class="k-note">
+        Scanning opens this same demo on your phone. No other device is needed
+        — use the button below to complete it here.
+      </p>
+    </section>
+
+  {% elif rental.payment_method == "capitec" %}
+    <section class="k-wallet">
+      <h2 class="k-h2">Capitec Pay</h2>
+      <p>A payment request would be sent to the Capitec app on <strong>{{ rental.mobile }}</strong>.</p>
+      <p class="k-note">Simulated — no request is sent.</p>
+    </section>
+
+  {% elif rental.payment_method == "applepay" %}
+    <section class="k-wallet">
+      <h2 class="k-h2">Apple Pay</h2>
+      <p>You would confirm with Face ID or Touch ID.</p>
+      <p class="k-note">Simulated — no wallet is contacted.</p>
+    </section>
+  {% endif %}
+
+  <div class="k-pay-actions">
+    <form method="post" action="/kiosk/{{ rental.reference }}/pay/success">
+      <button class="k-btn k-btn-primary k-btn-xl" type="submit">
+        {% if rental.payment_method == "scan" %}
+          Simulate Payment on This Device
+        {% else %}
+          Simulate Successful Payment
+        {% endif %}
+      </button>
+    </form>
+
+    <form method="post" action="/kiosk/{{ rental.reference }}/pay/fail">
+      <button class="k-btn k-btn-danger" type="submit">Simulate Failed Payment</button>
+    </form>
+
+    <form method="post" action="/kiosk/{{ rental.reference }}/pay/cancel">
+      <button class="k-btn k-btn-ghost" type="submit">Cancel Payment</button>
+    </form>
+  </div>
+
+  <p class="k-note k-center">
+    Power bank {{ rental.bank_id }} is being held in slot {{ rental.slot }} for this rental.
+  </p>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if rental.payment_method == "scan" %}
+<script src="/static/js/kiosk-countdown.js"></script>
+{% endif %}
+{% endblock %}

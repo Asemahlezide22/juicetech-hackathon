@@ -1,0 +1,11 @@
+{# Progress indicator across the rental flow.
+   Usage: {% with step = 2 %}{% include "kiosk/_steps.html" %}{% endwith %} #}
+<ol class="k-steps" aria-label="Rental progress">
+  {% for label in ["Period", "Details", "Payment", "Collect"] %}
+    {% set n = loop.index %}
+    <li class="{% if n < step %}done{% elif n == step %}current{% endif %}">
+      <span class="k-step-dot" aria-hidden="true">{% if n < step %}&check;{% else %}{{ n }}{% endif %}</span>
+      <span class="k-step-label">{{ label }}</span>
+    </li>
+  {% endfor %}
+</ol>

@@ -1,0 +1,123 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Demo dashboard | Juice Tech{% endblock %}
+
+{% block content %}
+
+<div class="k-dash">
+
+  <div class="k-dash-head">
+    <h1 class="k-h1">Demo dashboard</h1>
+    <span class="k-online"><span class="k-pulse"><span></span><span></span></span> Station online</span>
+  </div>
+
+  <div class="k-tiles">
+    <div class="k-tile"><span>Available</span><strong>{{ data.available }}</strong></div>
+    <div class="k-tile"><span>Rented out</span><strong>{{ data.rented }}</strong></div>
+    <div class="k-tile"><span>Returned</span><strong>{{ data.returned }}</strong></div>
+    <div class="k-tile"><span>Simulated revenue</span><strong>R{{ data.revenue }}</strong></div>
+    <div class="k-tile"><span>Deposits held</span><strong>R{{ data.deposits_held }}</strong></div>
+    <div class="k-tile"><span>Deposits refunded</span><strong>R{{ data.deposits_refunded }}</strong></div>
+  </div>
+
+  <section class="k-panel">
+    <h2 class="k-h2">Presenter controls</h2>
+    <div class="k-pay-actions">
+      <a class="k-btn k-btn-primary" href="/kiosk?station=JUICE-QR-001">View customer journey</a>
+      <a class="k-btn" href="/return-power-bank">Return screen</a>
+      <form method="post" action="/demo-dashboard/reset"
+            onsubmit="return confirm('Reset the demo? Every demo rental will be cleared.')">
+        <button class="k-btn k-btn-danger" type="submit">Reset demo</button>
+      </form>
+    </div>
+    <p class="k-note">
+      Reset clears every demo rental and puts all power banks back. It does not
+      touch the main Juice Tech site.
+    </p>
+  </section>
+
+  {% if data.active_rentals %}
+  <section class="k-panel">
+    <h2 class="k-h2">Out on rental now</h2>
+    <ul class="k-active">
+      {% for r in data.active_rentals %}
+        <li>
+          <span><strong>{{ r.reference }}</strong> &middot; {{ r.bank_id }} &middot; {{ r.name or "—" }}</span>
+          <form method="post" action="/demo-dashboard/return/{{ r.reference }}">
+            <button class="k-btn k-btn-sm" type="submit">Mark returned</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <section class="k-panel">
+    <h2 class="k-h2">Recent demo transactions</h2>
+    {% if data.rentals %}
+      <div class="k-table-wrap">
+        <table class="k-table">
+          <thead>
+            <tr>
+              <th>Reference</th><th>Customer</th><th>Bank</th>
+              <th>Fee</th><th>Deposit</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in data.rentals %}
+              <tr>
+                <td>{{ r.reference }}</td>
+                <td>{{ r.name or "—" }}</td>
+                <td>{{ r.bank_id or "—" }}</td>
+                <td>R{{ r.fee }}</td>
+                <td>R{{ r.deposit }}</td>
+                <td><span class="k-chip k-chip-{{ r.status }}">{{ labels.get(r.status, r.status) }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="k-muted">No demo rentals yet. Start one from the kiosk.</p>
+    {% endif %}
+  </section>
+
+  <section class="k-panel">
+    <h2 class="k-h2">Power bank fleet</h2>
+    <div class="k-fleet">
+      {% for b in data.banks %}
+        <div class="k-unit k-unit-{{ b.status }}">
+          <span class="k-unit-id">{{ b.id }}</span>
+          <span class="k-unit-bar"><span style="width: {{ b.battery }}%"></span></span>
+          <span class="k-unit-meta">{{ b.battery }}% &middot; {{ b.status }}</span>
+          <form method="post" action="/demo-dashboard/bank/{{ b.id }}">
+            <select name="status" onchange="this.form.submit()" aria-label="Set {{ b.id }} status">
+              {% for s in cfg.BANK_STATUSES %}
+                <option value="{{ s }}" {% if s == b.status %}selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="k-panel">
+    <h2 class="k-h2">Activity log</h2>
+    {% if data.events %}
+      <ul class="k-log">
+        {% for e in data.events %}
+          <li>
+            <span class="k-log-time">{{ e.created_at.strftime("%H:%M") }}</span>
+            <span>{{ e.detail }}</span>
+            {% if e.amount %}<span class="k-log-amount">R{{ e.amount }}</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="k-muted">Nothing has happened yet.</p>
+    {% endif %}
+  </section>
+
+</div>
+
+{% endblock %}

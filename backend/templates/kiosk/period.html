@@ -1,0 +1,40 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Choose rental period | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 1 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<h1 class="k-h1">How long do you need it?</h1>
+
+<form method="post" action="/kiosk/{{ rental.reference }}/period" class="k-plans">
+  {% for plan in plans %}
+    <label class="k-plan">
+      <input type="radio" name="plan" value="{{ plan.id }}" {% if loop.first %}checked{% endif %}>
+      <span class="k-plan-body">
+        <span class="k-plan-head">
+          <span class="k-plan-name">{{ plan.label }}</span>
+          <span class="k-plan-price">R{{ plan.price }}</span>
+        </span>
+        <span class="k-plan-blurb">{{ plan.blurb }}</span>
+
+        <span class="k-breakdown">
+          <span><span>Rental fee</span><span>R{{ plan.price }}</span></span>
+          <span><span>Refundable deposit</span><span>R{{ deposit }}</span></span>
+          <span class="k-breakdown-total">
+            <span>Demo total</span><span>R{{ plan.price + deposit }}</span>
+          </span>
+        </span>
+      </span>
+    </label>
+  {% endfor %}
+
+  <p class="k-note">
+    The R{{ deposit }} deposit is refundable and returned when the power bank
+    is returned.
+  </p>
+
+  <button class="k-btn k-btn-primary k-btn-xl" type="submit">Continue</button>
+</form>
+
+{% endblock %}

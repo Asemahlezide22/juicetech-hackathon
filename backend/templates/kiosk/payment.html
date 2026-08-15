@@ -1,0 +1,35 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Payment method | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 3 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<h1 class="k-h1">How would you like to pay?</h1>
+
+<div class="k-demo-banner">DEMO PAYMENT — No real money will be charged.</div>
+
+{% if plan %}
+  <div class="k-costs">
+    <div><span>{{ plan.label }} rental</span><span>R{{ rental.fee }}</span></div>
+    <div><span>Refundable deposit</span><span>R{{ rental.deposit }}</span></div>
+    <div class="k-costs-total"><span>Demo total</span><span>R{{ rental.fee + rental.deposit }}</span></div>
+  </div>
+{% endif %}
+
+<form method="post" action="/kiosk/{{ rental.reference }}/payment" class="k-methods">
+  {% for m in methods %}
+    <button class="k-method" type="submit" name="method" value="{{ m.id }}">
+      <span class="k-method-name">{{ m.label }}</span>
+      <span class="k-method-hint">{{ m.hint }}</span>
+      <span class="k-method-tag">DEMO</span>
+    </button>
+  {% endfor %}
+</form>
+
+<p class="k-note">
+  Every option above is simulated. No payment provider is contacted and no
+  real money moves.
+</p>
+
+{% endblock %}

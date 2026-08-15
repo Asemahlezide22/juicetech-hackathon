@@ -1,0 +1,22 @@
+{% extends "kiosk/base.html" %}
+{% block title %}No power banks available | Juice Tech{% endblock %}
+
+{% block content %}
+
+<div class="k-center">
+  <h1 class="k-h1">No power banks available</h1>
+  <p class="k-lede">
+    {{ station.name }} ({{ station.id }}) has no charged power banks right now,
+    so we stopped before taking any payment.
+  </p>
+
+  <div class="k-pay-actions">
+    <a class="k-btn k-btn-primary k-btn-xl" href="/return">Find another station</a>
+    <a class="k-btn" href="/kiosk?station={{ station.id }}">Try again</a>
+    <a class="k-btn k-btn-ghost" href="/demo-dashboard">Demo Dashboard</a>
+  </div>
+
+  <p class="k-note">Nothing was charged.</p>
+</div>
+
+{% endblock %}

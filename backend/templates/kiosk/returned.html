@@ -1,0 +1,57 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Return accepted | Juice Tech{% endblock %}
+
+{% block content %}
+
+<div class="k-dispense" data-slot="{{ rental.slot }}" data-mode="return">
+
+  <div class="k-tick" aria-hidden="true">&check;</div>
+  <h1 class="k-h1 k-center">Return accepted</h1>
+
+  <ol class="k-machine-log" id="machine-log">
+    <li data-step="1">Slot {{ "%02d"|format(rental.slot or 0) }} opening…</li>
+    <li data-step="2">Insert power bank into slot {{ "%02d"|format(rental.slot or 0) }}</li>
+    <li data-step="3">Power bank detected</li>
+    <li data-step="4">Rental completed</li>
+  </ol>
+
+  <div class="k-station-art" id="station-art" hidden>
+    <div class="k-station-screen">
+      <span class="k-station-name">{{ station.name }}</span>
+      <span class="k-station-id">{{ station.id }}</span>
+    </div>
+    <div class="k-slots">
+      {% for i in range(1, (station.slots or 12) + 1) %}
+        <div class="k-slot {% if i == rental.slot %}is-target{% endif %}" data-slot="{{ i }}">
+          <span class="k-bank"></span>
+          <span class="k-slot-no">{{ "%02d"|format(i) }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="collect-stage" hidden>
+    <p class="k-refund">R{{ rental.deposit }} deposit refund initiated — SIMULATED</p>
+
+    <dl class="k-order">
+      <div><dt>Rental reference</dt><dd>{{ rental.reference }}</dd></div>
+      <div><dt>Power bank</dt><dd>{{ rental.bank_id }}</dd></div>
+      <div><dt>Status</dt><dd>Available</dd></div>
+      <div><dt>Rental fee</dt><dd>R{{ rental.fee }}</dd></div>
+      <div class="k-order-total"><dt>Deposit refunded</dt><dd>R{{ rental.deposit }}</dd></div>
+    </dl>
+
+    <div class="k-pay-actions">
+      <a class="k-btn k-btn-primary k-btn-xl" href="/kiosk/{{ rental.reference }}/receipt">View Demo Receipt</a>
+      <a class="k-btn" href="/kiosk?station={{ rental.station_id }}">Start Another Rental</a>
+      <a class="k-btn k-btn-ghost" href="/demo-dashboard">Demo Dashboard</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/kiosk-dispense.js"></script>
+{% endblock %}

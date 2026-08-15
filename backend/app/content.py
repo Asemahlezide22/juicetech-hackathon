@@ -26,10 +26,7 @@ NAV = [
     {"label": "Return", "url": "/return"},
     {"label": "Services", "url": "/services"},
     {"label": "Event Hire", "url": "/event-hire"},
-    {"label": "Advertising", "url": "/advertising"},
-    {"label": "Franchising", "url": "/franchising"},
     {"label": "About Us", "url": "/about"},
-    {"label": "Help Centre", "url": "/help-centre"},
     {"label": "Contact Us", "url": "/contact"},
 ]
 
@@ -78,18 +75,11 @@ SERVICES = [
         "cta": "See event packages",
     },
     {
-        "title": "Digital advertising",
-        "body": "Large station screens running brand adverts, sponsor messages, "
-                "schedules and safety notices.",
-        "url": "/advertising",
-        "cta": "Advertise with us",
-    },
-    {
-        "title": "Franchising",
-        "body": "Equipment, technology, training and sales support to run Juice "
-                "Tech in your city.",
-        "url": "/franchising",
-        "cta": "Explore franchising",
+        "title": "Return anywhere",
+        "body": "Drop your power bank at any station with a free slot. The site "
+                "finds the closest one to you and shows the walk.",
+        "url": "/return",
+        "cta": "Find nearest station",
     },
 ]
 
@@ -172,41 +162,6 @@ EVENT_EXTRAS = [
     ("Overnight or multi-day event", "Custom quote"),
 ]
 
-ADVERTISING = {
-    "intro": "Every Juice Tech station carries a large screen at eye level, in "
-             "places where people stop and wait. Advertise where attention "
-             "already is.",
-    "options": [
-        ("Screen advert", "from R1,000 / event", "Your image or video in rotation on station screens."),
-        ("Exclusive sponsorship", "R3,500 – R7,500 / event", "Sole brand across every screen at the venue."),
-        ("Custom station branding", "from R1,500", "Wrap the station itself in your brand."),
-        ("Post-event report", "R750", "Impressions, dwell time and rental volumes."),
-    ],
-    "process": [
-        "Upload your image or video creative",
-        "Choose venues, stations and display hours",
-        "We approve all content before it goes live",
-        "Receive a report after the campaign",
-    ],
-}
-
-FRANCHISING = {
-    "intro": "Juice Tech supplies equipment, technology, training and sales "
-             "support to approved franchise partners.",
-    "provided": [
-        "Charging stations and power bank stock",
-        "The rental platform, app and payment integration",
-        "Brand assets and marketing templates",
-        "Operator training and onboarding",
-        "Ongoing technical and sales support",
-    ],
-    "looking_for": [
-        "Local market knowledge and venue relationships",
-        "Capacity to service and rebalance stations",
-        "A commitment to the Juice Tech service standard",
-    ],
-}
-
 ABOUT = {
     "intro": "Juice Tech is a South African shared power bank network. One "
              "charged bank serves several people a day instead of sitting in "
@@ -286,18 +241,3 @@ FAQS = [
     },
 ]
 
-HELP_ARTICLES = [
-    ("How to rent", "Scan the station QR code, verify your number, choose a package, pay and collect the power bank released to you."),
-    ("How to return", "Slide the power bank into any empty slot at a Juice Tech station until it clicks. Wait for the on-screen confirmation."),
-    ("Payment methods", "Debit and credit cards, Capitec Pay, Instant EFT, Apple Pay, Google Pay and QR payment via Payfast. Staffed events also accept tap to pay and chip and PIN."),
-    ("Security deposit and refunds", "A refundable R500 deposit is held for each rental and released on confirmed return. Bank processing can take a few working days."),
-    ("Late returns", "A 15-minute grace period applies, then R75 per additional 30 minutes. Late fees never exceed the disclosed replacement value."),
-    ("Lost or damaged power banks", "A configurable replacement fee applies (currently R750). Every replacement charge is reviewed by staff first."),
-    ("Station did not release a power bank", "Do not pay again. Contact support with your rental reference — failed releases are investigated and refunded or corrected."),
-    ("Payment succeeded but no power bank released", "Your rental stays inactive until the station confirms a release, so the charge is reversed or a bank is released manually."),
-    ("Event bookings", "Submit the event hire form and you'll receive a reference number plus a quotation. Bookings confirm on a 50% deposit."),
-    ("Advertising", "Upload image or video creative, choose venues, stations and display hours. All content is approved before going live."),
-    ("Franchising", "Juice Tech supplies equipment, technology, training and sales support to approved franchise partners."),
-    ("Privacy", "Personal information is processed according to our privacy policy. Juice Tech never stores raw card details."),
-    ("Contacting support", "Email info@juicetech.co.za, call 073 407 2268 or WhatsApp 062 372 6017."),
-]

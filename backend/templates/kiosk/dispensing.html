@@ -1,0 +1,72 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Dispensing | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 4 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<div class="k-dispense" data-slot="{{ rental.slot }}" data-bank="{{ rental.bank_id }}">
+
+  <div id="auth-stage">
+    <div class="k-spinner" aria-hidden="true"></div>
+    <h1 class="k-h1 k-center">Authorising demo payment…</h1>
+  </div>
+
+  <div id="paid-stage" hidden>
+    <div class="k-tick" aria-hidden="true">&check;</div>
+    <h1 class="k-h1 k-center">Demo payment successful!</h1>
+    <p class="k-center k-muted">Transaction status: PAID — SIMULATED</p>
+  </div>
+
+  <ol class="k-machine-log" id="machine-log" hidden>
+    <li data-step="1">Connecting to Juice Station…</li>
+    <li data-step="2">Payment confirmed</li>
+    <li data-step="3">Unlocking slot {{ "%02d"|format(rental.slot or 0) }}…</li>
+    <li data-step="4">Power bank released!</li>
+  </ol>
+
+  <!-- Station graphic. The chosen slot lights up and the bank slides out. -->
+  <div class="k-station-art" id="station-art" hidden>
+    <div class="k-station-screen">
+      <span class="k-station-name">{{ station.name }}</span>
+      <span class="k-station-id">{{ station.id }}</span>
+    </div>
+    <div class="k-slots">
+      {% for i in range(1, (station.slots or 12) + 1) %}
+        <div class="k-slot {% if i == rental.slot %}is-target{% endif %}" data-slot="{{ i }}">
+          <span class="k-bank"></span>
+          <span class="k-slot-no">{{ "%02d"|format(i) }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="collect-stage" hidden>
+    <p class="k-collect">
+      Take power bank <strong>{{ rental.bank_id }}</strong> from the flashing slot.
+    </p>
+
+    <dl class="k-order">
+      <div><dt>Rental reference</dt><dd>{{ rental.reference }}</dd></div>
+      <div><dt>Power bank</dt><dd>{{ rental.bank_id }}</dd></div>
+      <div><dt>Station</dt><dd>{{ station.id }}</dd></div>
+      <div><dt>Rental fee</dt><dd>R{{ rental.fee }}</dd></div>
+      <div><dt>Deposit held</dt><dd>R{{ rental.deposit }}</dd></div>
+    </dl>
+
+    <form method="post" action="/kiosk/{{ rental.reference }}/dispensed" class="k-pay-actions">
+      <button class="k-btn k-btn-primary k-btn-xl" type="submit">View Demo Receipt</button>
+    </form>
+    <div class="k-pay-actions">
+      <a class="k-btn" href="/kiosk?station={{ station.id }}">Start Another Rental</a>
+      <a class="k-btn k-btn-ghost" href="/return-power-bank">Return a Power Bank</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/kiosk-dispense.js"></script>
+{% endblock %}

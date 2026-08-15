@@ -1,0 +1,47 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Rent a power bank | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="k-hero">
+  <h1>Rent a power bank</h1>
+  <p class="k-lede">Charged and ready. Return it to any Juice Tech station.</p>
+
+  <div class="k-availability {% if available == 0 %}is-empty{% endif %}">
+    <span class="k-pulse" aria-hidden="true"><span></span><span></span></span>
+    <strong>{{ available }}</strong>
+    <span>{% if available == 1 %}available now{% else %}available now{% endif %}</span>
+  </div>
+
+  <dl class="k-station">
+    <div><dt>Station</dt><dd>{{ station.name }}</dd></div>
+    <div><dt>Station ID</dt><dd>{{ station.id }}</dd></div>
+  </dl>
+
+  {% if available > 0 %}
+    <form method="post" action="/kiosk/start">
+      <input type="hidden" name="station" value="{{ station.id }}">
+      <button class="k-btn k-btn-primary k-btn-xl" type="submit">Start Rental</button>
+    </form>
+  {% else %}
+    <p class="k-alert">This station is empty right now. Try another station nearby.</p>
+    <a class="k-btn" href="/return">Find another station</a>
+  {% endif %}
+
+  <p class="k-note">
+    From R{{ cfg.PLANS['1h'].price }} for an hour, plus a refundable
+    R{{ deposit }} deposit.
+  </p>
+</section>
+
+<section class="k-panel">
+  <h2 class="k-h2">How it works</h2>
+  <ol class="k-flow">
+    <li><span>1</span> Choose how long you need it</li>
+    <li><span>2</span> Enter your details</li>
+    <li><span>3</span> Pay (simulated for this demo)</li>
+    <li><span>4</span> Take the power bank from the flashing slot</li>
+  </ol>
+</section>
+
+{% endblock %}

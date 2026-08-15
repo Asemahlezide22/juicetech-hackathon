@@ -1,0 +1,19 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Rental not found | Juice Tech{% endblock %}
+
+{% block content %}
+
+<div class="k-center">
+  <h1 class="k-h1">Rental not found</h1>
+  <p class="k-lede">
+    We could not find <strong>{{ reference }}</strong>. It may have been
+    cleared by a demo reset.
+  </p>
+
+  <div class="k-pay-actions">
+    <a class="k-btn k-btn-primary k-btn-xl" href="/kiosk">Start a new rental</a>
+    <a class="k-btn k-btn-ghost" href="/demo-dashboard">Demo Dashboard</a>
+  </div>
+</div>
+
+{% endblock %}

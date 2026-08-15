@@ -1,0 +1,74 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Your details | Juice Tech{% endblock %}
+
+{% block steps %}{% with step = 2 %}{% include "kiosk/_steps.html" %}{% endwith %}{% endblock %}
+
+{% block content %}
+
+<h1 class="k-h1">Your details</h1>
+
+{% if plan %}
+  <p class="k-summary-line">
+    {{ plan.label }} &middot; R{{ plan.fee if plan.fee is defined else plan.price }}
+    + R{{ deposit }} deposit
+  </p>
+{% endif %}
+
+<form method="post" action="/kiosk/{{ rental.reference }}/details" class="k-form" novalidate>
+
+  <div class="k-field {% if errors.name %}has-error{% endif %}">
+    <label for="name">First name</label>
+    <input id="name" name="name" type="text" autocomplete="given-name"
+           value="{{ (values.name if values else '') or '' }}" required>
+    {% if errors.name %}<p class="k-error">{{ errors.name }}</p>{% endif %}
+  </div>
+
+  <div class="k-field {% if errors.mobile %}has-error{% endif %}">
+    <label for="mobile">Mobile number</label>
+    <input id="mobile" name="mobile" type="tel" inputmode="tel" autocomplete="tel"
+           placeholder="071 181 5248"
+           value="{{ (values.mobile if values else '') or '' }}" required>
+    {% if errors.mobile %}<p class="k-error">{{ errors.mobile }}</p>{% endif %}
+  </div>
+
+  <div class="k-field {% if errors.email %}has-error{% endif %}">
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+           placeholder="you@example.co.za"
+           value="{{ (values.email if values else '') or '' }}" required>
+    {% if errors.email %}<p class="k-error">{{ errors.email }}</p>{% endif %}
+  </div>
+
+  <label class="k-consent {% if errors.consent %}has-error{% endif %}">
+    <input type="checkbox" name="consent" value="yes">
+    <span>
+      I agree to the Juice Tech rental terms and understand that this is a
+      hackathon demonstration.
+    </span>
+  </label>
+  {% if errors.consent %}<p class="k-error">{{ errors.consent }}</p>{% endif %}
+
+  <button class="k-btn k-btn-primary k-btn-xl" type="submit">Continue to payment</button>
+
+  <button class="k-btn k-btn-ghost" type="button" id="fill-demo">
+    Use demo details
+  </button>
+
+  <p class="k-note">
+    We never ask for an ID number. Nothing you enter here leaves this machine.
+  </p>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Judges should not have to type on a phone keyboard mid-demo.
+  document.getElementById("fill-demo").addEventListener("click", function () {
+    document.getElementById("name").value = {{ demo.name | tojson }};
+    document.getElementById("mobile").value = {{ demo.mobile | tojson }};
+    document.getElementById("email").value = {{ demo.email | tojson }};
+    document.querySelector('input[name="consent"]').checked = true;
+  });
+</script>
+{% endblock %}

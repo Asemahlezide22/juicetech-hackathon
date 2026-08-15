@@ -99,29 +99,9 @@ def event_hire(request: Request):
     )
 
 
-@router.get("/advertising", include_in_schema=False)
-def advertising(request: Request):
-    return render(request, "advertising.html", advertising=content.ADVERTISING)
-
-
-@router.get("/franchising", include_in_schema=False)
-def franchising(request: Request):
-    return render(request, "franchising.html", franchising=content.FRANCHISING)
-
-
 @router.get("/about", include_in_schema=False)
 def about(request: Request):
     return render(request, "about.html", about=content.ABOUT, trust=content.TRUST_POINTS)
-
-
-@router.get("/help-centre", include_in_schema=False)
-def help_centre(request: Request):
-    return render(
-        request,
-        "help-centre.html",
-        articles=content.HELP_ARTICLES,
-        faqs=content.FAQS,
-    )
 
 
 @router.get("/contact", include_in_schema=False)

@@ -1,0 +1,34 @@
+{% extends "kiosk/base.html" %}
+{% block title %}Return a power bank | Juice Tech{% endblock %}
+
+{% block content %}
+
+<h1 class="k-h1">Return a power bank</h1>
+<p class="k-lede">Enter your rental reference and the number on the power bank.</p>
+
+{% if error %}
+  <p class="k-alert">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="/return-power-bank" class="k-form">
+  <div class="k-field">
+    <label for="reference">Rental reference</label>
+    <input id="reference" name="reference" type="text" placeholder="JT-2026-0001"
+           value="{{ values.reference or '' }}" autocapitalize="characters" required>
+  </div>
+
+  <div class="k-field">
+    <label for="bank_id">Power bank number</label>
+    <input id="bank_id" name="bank_id" type="text" placeholder="PB-007"
+           value="{{ values.bank_id or '' }}" autocapitalize="characters">
+  </div>
+
+  <button class="k-btn k-btn-primary k-btn-xl" type="submit">Return power bank</button>
+</form>
+
+<p class="k-note">
+  Both codes are on your demo receipt. You can return a power bank to any
+  Juice Tech station, not only the one you collected it from.
+</p>
+
+{% endblock %}

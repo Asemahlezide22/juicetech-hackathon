@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <title>{% block title %}Juice Tech Kiosk{% endblock %}</title>
+  <meta name="description" content="Juice Tech power bank rental — hackathon demonstration. Simulated payments only.">
+  <link rel="stylesheet" href="/static/css/kiosk.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<!-- Permanent, on every screen. Nobody should ever mistake this for live. -->
+<div class="demo-badge" role="status">{{ badge }}</div>
+
+<div class="kiosk">
+
+  <header class="k-header">
+    <a class="k-logo" href="/kiosk">
+      <svg class="k-logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="6" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M25 12h3v8h-3z" fill="currentColor"/>
+        <path d="M15 9l-6 9h4.5l-1.5 6 6-9h-4.5z" fill="currentColor"/>
+      </svg>
+      <span class="k-logo-text">JUICE <strong>TECH</strong></span>
+    </a>
+    {% block header_extra %}{% endblock %}
+  </header>
+
+  {% block steps %}{% endblock %}
+
+  <main class="k-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="k-footer">
+    <p class="k-tagline">{{ tagline }}</p>
+    <p class="k-disclaimer">{{ disclaimer }}</p>
+    <p class="k-links">
+      <a href="/kiosk">Kiosk</a>
+      <a href="/return-power-bank">Return</a>
+      <a href="/demo-dashboard">Dashboard</a>
+      <a href="/">Main site</a>
+    </p>
+  </footer>
+
+</div>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

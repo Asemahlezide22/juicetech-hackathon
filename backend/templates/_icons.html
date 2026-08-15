@@ -87,8 +87,7 @@
 {# Maps a service title to an icon, so content.py stays free of markup. #}
 {% macro service_icon(title) -%}
   {%- if "Event" in title -%}{{ tent() }}
-  {%- elif "advertising" in title|lower -%}{{ screen() }}
-  {%- elif "Franchis" in title -%}{{ store() }}
+  {%- elif "Return" in title -%}{{ pin("") }}
   {%- else -%}{{ battery() }}
   {%- endif -%}
 {%- endmacro %}
