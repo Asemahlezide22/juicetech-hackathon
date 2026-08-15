@@ -23,7 +23,10 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+# Ignore PyCharm's per-machine settings, but keep the shared run
+# configurations so everyone gets the same Run buttons on clone.
+.idea/*
+!.idea/runConfigurations/
 .DS_Store
 *.suo
 *.ntvs*
