@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Juice Tech{% endblock %}</title>
+  <meta name="description" content="{% block description %}Juice Tech power bank rentals, event charging and digital advertising in Cape Town. Pay for the time, share the time.{% endblock %}">
+
+  <!-- Plain CSS, no framework and no CDN, so the page still loads if the
+       venue wifi dies. -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <a class="logo" href="/">
+    <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="6" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M25 12h3v8h-3z" fill="currentColor"/>
+      <path d="M15 9l-6 9h4.5l-1.5 6 6-9h-4.5z" fill="currentColor"/>
+    </svg>
+    <span class="logo-text">JUICE <strong>TECH</strong></span>
+  </a>
+
+  <nav class="site-nav" aria-label="Main">
+    {% for item in nav %}
+      <a href="{{ item.url }}"{% if item.url == current_url %} class="is-current" aria-current="page"{% endif %}>{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+
+  <a class="btn btn-primary btn-sm header-cta" href="/rent-a-power-bank">Rent Now</a>
+</header>
+
+<main id="main">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <p class="tagline">{{ brand.tagline }}</p>
+  <nav class="footer-nav" aria-label="Footer">
+    {% for item in nav %}
+      <a href="{{ item.url }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+  <p class="muted">
+    {{ brand.location }} &middot;
+    <a href="{{ brand.phone_href }}">{{ brand.phone }}</a> &middot;
+    <a href="{{ brand.whatsapp_href }}">WhatsApp {{ brand.whatsapp }}</a> &middot;
+    <a href="mailto:{{ brand.email }}">{{ brand.email }}</a>
+  </p>
+  <p class="muted small">Served by Python &middot; <a href="/docs">API documentation</a></p>
+</footer>
+
+<script src="/static/js/site.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

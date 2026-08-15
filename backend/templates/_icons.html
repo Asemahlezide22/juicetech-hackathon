@@ -1,0 +1,94 @@
+{# Inline SVG icons. Inline so there is no extra request and they inherit
+   currentColor. Used as: {% from "_icons.html" import bolt %}{{ bolt() }} #}
+
+{% macro bolt(cls="bolt") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <path d="M13.5 2 4 14h6.2l-.9 8L20 10h-6.4z"/>
+</svg>
+{%- endmacro %}
+
+{% macro battery(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="2" y="7" width="16" height="10" rx="3"/>
+  <path d="M21 10v4"/>
+  <path d="M9.5 9.5 7 12.5h3l-.5 2.5 3-3h-3z" fill="currentColor" stroke="none"/>
+</svg>
+{%- endmacro %}
+
+{% macro pin(cls="icon") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/>
+  <circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/>
+</svg>
+{%- endmacro %}
+
+{% macro qr(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+  <rect x="3" y="3" width="7" height="7" rx="1"/>
+  <rect x="14" y="3" width="7" height="7" rx="1"/>
+  <rect x="3" y="14" width="7" height="7" rx="1"/>
+  <path d="M14 14h3v3h-3zM20 20h1M18 21v-4"/>
+</svg>
+{%- endmacro %}
+
+{% macro shield(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/>
+  <path d="M9 12l2 2 4-4"/>
+</svg>
+{%- endmacro %}
+
+{% macro phone_off(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="6" y="2" width="12" height="20" rx="3"/>
+  <path d="M10 6h4"/>
+  <path d="M3 3l18 18"/>
+</svg>
+{%- endmacro %}
+
+{% macro camera(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M3 8h3l2-3h8l2 3h3v11H3z"/>
+  <circle cx="12" cy="13" r="3.5"/>
+</svg>
+{%- endmacro %}
+
+{% macro screen(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <rect x="2" y="4" width="20" height="13" rx="2"/>
+  <path d="M8 21h8M12 17v4"/>
+</svg>
+{%- endmacro %}
+
+{% macro store(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M3 9l1.5-5h15L21 9"/>
+  <path d="M4 9v11h16V9"/>
+  <path d="M9 20v-6h6v6"/>
+</svg>
+{%- endmacro %}
+
+{% macro tent(cls="") -%}
+<svg class="{{ cls }}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 3 3 20h18z"/>
+  <path d="M12 3v17M12 20l5-9M12 20l-5-9"/>
+</svg>
+{%- endmacro %}
+
+{# Maps a service title to an icon, so content.py stays free of markup. #}
+{% macro service_icon(title) -%}
+  {%- if "Event" in title -%}{{ tent() }}
+  {%- elif "advertising" in title|lower -%}{{ screen() }}
+  {%- elif "Franchis" in title -%}{{ store() }}
+  {%- else -%}{{ battery() }}
+  {%- endif -%}
+{%- endmacro %}

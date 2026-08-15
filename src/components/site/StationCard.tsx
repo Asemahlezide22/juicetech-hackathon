@@ -1,9 +1,28 @@
+import { useQuery } from "@tanstack/react-query";
 import { BatteryCharging, QrCode, Signal, Zap } from "lucide-react";
 
+import { api } from "@/lib/api";
 import { DEMO_STATION } from "@/lib/jt-data";
 
+/**
+ * Live availability for the flagship station.
+ *
+ * Polls the Python API every 10 seconds. If the API is not running the card
+ * falls back to the static demo figures, so the marketing site never breaks.
+ */
 export function LiveStationCard({ className = "" }: { className?: string }) {
-  const s = DEMO_STATION;
+  const { data, isError } = useQuery({
+    queryKey: ["station", DEMO_STATION.id],
+    queryFn: () => api.station(DEMO_STATION.id),
+    refetchInterval: 10_000,
+    retry: 1,
+  });
+
+  const s = data ?? DEMO_STATION;
+  const isLive = Boolean(data) && !isError;
+  const online = data ? data.online : DEMO_STATION.online;
+  const fastCharge = data ? data.fast_charge : DEMO_STATION.fastCharge;
+
   return (
     <div
       className={`rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur ${className}`}
@@ -11,10 +30,18 @@ export function LiveStationCard({ className = "" }: { className?: string }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="relative flex size-2.5">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-75" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-success" />
+            {online && (
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-75" />
+            )}
+            <span
+              className={`relative inline-flex size-2.5 rounded-full ${online ? "bg-success" : "bg-ink-muted"}`}
+            />
           </span>
-          <span className="text-sm font-bold uppercase tracking-widest text-success">Station online</span>
+          <span
+            className={`text-sm font-bold uppercase tracking-widest ${online ? "text-success" : "text-ink-muted"}`}
+          >
+            {online ? "Station online" : "Station offline"}
+          </span>
         </div>
         <span className="font-display text-xs font-bold text-ink-muted">{s.id}</span>
       </div>
@@ -26,10 +53,12 @@ export function LiveStationCard({ className = "" }: { className?: string }) {
         <Stat label="Rented" value={s.rented} icon={<Zap className="size-4" />} />
       </div>
 
-      <div className="mt-5 flex items-center gap-2 rounded-xl bg-primary/15 px-3.5 py-2.5 text-sm font-semibold text-primary">
-        <Zap className="size-4 animate-charge-pulse" />
-        Fast charging available
-      </div>
+      {fastCharge && (
+        <div className="mt-5 flex items-center gap-2 rounded-xl bg-primary/15 px-3.5 py-2.5 text-sm font-semibold text-primary">
+          <Zap className="size-4 animate-charge-pulse" />
+          Fast charging available
+        </div>
+      )}
 
       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4 text-sm text-ink-muted">
         <span className="flex items-center gap-2">
@@ -39,6 +68,10 @@ export function LiveStationCard({ className = "" }: { className?: string }) {
           <Signal className="size-4 text-primary" /> {s.signal}/5
         </span>
       </div>
+
+      <p className="mt-3 text-center text-[11px] uppercase tracking-widest text-ink-muted/70">
+        {isLive ? "Live from the station network" : "Showing sample data"}
+      </p>
     </div>
   );
 }

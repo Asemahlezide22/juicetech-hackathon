@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Contact us | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Contact us</p>
+  <h1>Let's get you <span class="accent">powered.</span></h1>
+  <p class="lede">
+    Event hire, advertising, franchising or support &mdash; send it here and
+    you'll get a reference number back.
+  </p>
+</section>
+
+<section class="section">
+  <div class="wrap wrap-narrow">
+    <div class="contact-grid">
+      <a class="contact-card" href="{{ brand.phone_href }}">
+        <span class="contact-label">Call</span>
+        <strong>{{ brand.phone }}</strong>
+      </a>
+      <a class="contact-card" href="{{ brand.whatsapp_href }}">
+        <span class="contact-label">WhatsApp</span>
+        <strong>{{ brand.whatsapp }}</strong>
+      </a>
+      <a class="contact-card" href="mailto:{{ brand.email }}">
+        <span class="contact-label">Email</span>
+        <strong>{{ brand.email }}</strong>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Send an enquiry</p>
+    <h2>Tell us what you need</h2>
+
+    <form id="enquiry-form" class="form" novalidate>
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" required autocomplete="name">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="phone">Cellphone</label>
+          <input id="phone" name="phone" type="tel" required autocomplete="tel"
+                 placeholder="073 407 2268">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="event_type">Type of enquiry</label>
+          <select id="event_type" name="event_type">
+            <option value="">General enquiry</option>
+            {% for pkg in event_packages_names %}
+              <option value="{{ pkg }}">{{ pkg }}</option>
+            {% endfor %}
+            <option value="Advertising">Advertising</option>
+            <option value="Franchising">Franchising</option>
+            <option value="Support">Support</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="event_date">Event date <span class="optional">(optional)</span></label>
+          <input id="event_date" name="event_date" type="date">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required
+                  placeholder="Venue, expected number of people, and what you need."></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-lg" type="submit">Send enquiry</button>
+      <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/contact.js"></script>
+{% endblock %}

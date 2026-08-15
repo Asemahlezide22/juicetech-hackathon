@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Help Centre | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Help Centre</p>
+  <h1>Answers, <span class="accent">fast.</span></h1>
+  <p class="lede">
+    Something went wrong at a station? Start here, then call
+    <a class="accent-link" href="{{ brand.phone_href }}">{{ brand.phone }}</a>.
+  </p>
+</section>
+
+<section class="section">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Guides</p>
+    <h2>How things work</h2>
+    {% for title, body in articles %}
+      <details class="faq">
+        <summary>{{ title }}</summary>
+        <p>{{ body }}</p>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">FAQ</p>
+    <h2>Frequently asked questions</h2>
+    {% for faq in faqs %}
+      <details class="faq">
+        <summary>{{ faq.q }}</summary>
+        <p>{{ faq.a }}</p>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="wrap wrap-narrow center">
+    <h2>Still stuck?</h2>
+    <p class="body-text light">
+      Have your rental reference ready &mdash; it looks like <code>JT-8F3K2A</code>.
+    </p>
+    <div class="cta-row center">
+      <a class="btn btn-primary" href="{{ brand.phone_href }}">Call {{ brand.phone }}</a>
+      <a class="btn btn-ghost" href="{{ brand.whatsapp_href }}">WhatsApp us</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

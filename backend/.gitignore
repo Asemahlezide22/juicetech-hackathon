@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.py[cod]
+# The database is generated and reseeded on first run. Covers juicetech.db,
+# any .bak copy of it, and SQLite's journal/WAL sidecar files.
+*.db*
+.pytest_cache/
+.env

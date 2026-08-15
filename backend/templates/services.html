@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Services | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Services</p>
+  <h1>Power, <span class="accent">everywhere people gather.</span></h1>
+  <p class="lede">Rentals, event hire, advertising and franchising.</p>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="cards cards-2">
+      {% for service in services %}
+        <article class="card">
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.body }}</p>
+          <a class="card-link" href="{{ service.url }}">{{ service.cta }} &rarr;</a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow center">
+    <h2>Not sure which fits?</h2>
+    <p class="body-text">
+      Tell us about your venue or event and we'll recommend a setup.
+    </p>
+    <a class="btn btn-primary" href="/contact">Talk to us</a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Return a power bank | Juice Tech{% endblock %}
+{% block description %}Find the nearest Juice Tech station with a free slot to return your power bank.{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Return a power bank</p>
+  <h1>Find your <span class="accent">nearest station</span>.</h1>
+  <p class="lede">
+    Return your power bank to <strong>any</strong> Juice Tech station with a free
+    slot &mdash; not just the one you collected it from.
+  </p>
+
+  <button id="find-btn" class="btn btn-primary btn-lg" type="button">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"
+            fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="9" r="2.5" fill="currentColor"/>
+    </svg>
+    Find nearest station
+  </button>
+
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+</section>
+
+<section class="panel">
+  <!-- Shown when the browser will not give us a location. -->
+  <div id="manual" class="manual" hidden>
+    <label for="suburb">No location? Pick the closest suburb:</label>
+    <div class="manual-row">
+      <select id="suburb">
+        <option value="">Choose a suburb&hellip;</option>
+        {% for area in areas %}
+          <option value="{{ area.lat }},{{ area.lng }}">{{ area.name }}</option>
+        {% endfor %}
+      </select>
+      <button id="suburb-btn" class="btn" type="button">Search</button>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <label class="checkbox">
+      <input type="checkbox" id="only-free" checked>
+      <span>Only show stations with a free slot</span>
+    </label>
+  </div>
+
+  <ul id="results" class="station-list"></ul>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/return.js"></script>
+{% endblock %}

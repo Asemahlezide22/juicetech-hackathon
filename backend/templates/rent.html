@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Rent a power bank | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Rent a power bank</p>
+  <h1>Charged in <span class="accent">under a minute.</span></h1>
+  <p class="lede">Scan the QR code on any Juice Tech station to begin.</p>
+</section>
+
+<section class="section">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Pricing</p>
+    <h2>Pay for the time you need.</h2>
+
+    <div class="cards cards-2">
+      {% for pkg in packages %}
+        <article class="card price-card{% if loop.first %} featured{% endif %}">
+          <h3>{{ pkg.label }}</h3>
+          <p class="price">R{{ pkg.price }}</p>
+          <p class="muted-text">{{ pkg.minutes }} minutes of charging</p>
+        </article>
+      {% endfor %}
+    </div>
+
+    <table class="table">
+      <caption>Fees explained upfront &mdash; no surprises.</caption>
+      <tbody>
+        <tr><th scope="row">Refundable security deposit</th><td>R{{ deposit }}</td></tr>
+        <tr><th scope="row">Grace period after due time</th><td>{{ grace_minutes }} minutes</td></tr>
+        <tr><th scope="row">Late fee after grace</th><td>R{{ late_fee_per_30 }} per 30 minutes</td></tr>
+        <tr><th scope="row">Replacement fee (fee cap)</th><td>R{{ replacement_fee }}</td></tr>
+      </tbody>
+    </table>
+    <p class="muted-text center">
+      Late fees never exceed the replacement fee. The deposit is released as soon
+      as the station confirms your return.
+    </p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <p class="kicker">The steps</p>
+    <h2>How a rental runs.</h2>
+    <ol class="steps">
+      {% for step in steps %}
+        <li><span class="step-num">{{ "%02d"|format(loop.index) }}</span>{{ step }}</li>
+      {% endfor %}
+    </ol>
+    <p class="center">
+      <a class="btn btn-primary" href="/return">Find a station to return to</a>
+    </p>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="wrap">
+    <p class="kicker">Safeguards</p>
+    <h2>Every rental is verified end to end.</h2>
+    <ul class="tick-grid">
+      {% for point in trust %}<li>{{ point }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+
+{% endblock %}

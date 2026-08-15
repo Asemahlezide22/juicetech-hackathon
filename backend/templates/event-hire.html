@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Event hire | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Event hire</p>
+  <h1>Keep your whole crowd <span class="accent">charged.</span></h1>
+  <p class="lede">
+    Stations, power banks, delivery, setup, collection and remote monitoring.
+    From R3,500 within Cape Town.
+  </p>
+  <a class="btn btn-primary btn-lg" href="/contact">Request a quote</a>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="kicker">Packages</p>
+    <h2>Pick the size of your event.</h2>
+    <div class="cards cards-3">
+      {% for pkg in event_packages %}
+        <article class="card price-card{% if pkg.featured %} featured{% endif %}">
+          {% if pkg.featured %}<span class="badge">Most popular</span>{% endif %}
+          <h3>{{ pkg.name }}</h3>
+          <p class="price">{{ pkg.price }}</p>
+          <ul class="ticks">
+            {% for feature in pkg.features %}<li>{{ feature }}</li>{% endfor %}
+          </ul>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Add-ons</p>
+    <h2>Extras and custom work</h2>
+    <table class="table">
+      <thead><tr><th scope="col">Extra</th><th scope="col">Price</th></tr></thead>
+      <tbody>
+        {% for name, price in extras %}
+          <tr><th scope="row">{{ name }}</th><td>{{ price }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="muted-text center">Bookings confirm on a 50% deposit.</p>
+    <p class="center"><a class="btn btn-primary" href="/contact">Request a quote</a></p>
+  </div>
+</section>
+
+{% endblock %}

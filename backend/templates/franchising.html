@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Franchising | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Franchising</p>
+  <h1>Run Juice Tech <span class="accent">in your city.</span></h1>
+  <p class="lede">{{ franchising.intro }}</p>
+  <a class="btn btn-primary btn-lg" href="/contact">Apply to partner</a>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="cards cards-2">
+      <article class="card">
+        <h3>What we provide</h3>
+        <ul class="ticks">
+          {% for item in franchising.provided %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </article>
+      <article class="card">
+        <h3>What we look for</h3>
+        <ul class="ticks">
+          {% for item in franchising.looking_for %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow center">
+    <h2>Interested?</h2>
+    <p class="body-text">
+      Send us your city, the venues you have access to, and how you plan to
+      service the stations.
+    </p>
+    <a class="btn btn-primary" href="/contact">Start a conversation</a>
+  </div>
+</section>
+
+{% endblock %}

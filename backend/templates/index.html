@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% from "_icons.html" import bolt, battery, qr, pin, shield, phone_off, camera, service_icon %}
+
+{% block title %}Juice Tech | Power Bank Rentals & Event Charging, Cape Town{% endblock %}
+
+{% block content %}
+
+<section class="hero hero-home">
+  <div class="hero-split">
+    <div>
+      <p class="eyebrow">{{ bolt() }} {{ brand.tagline }}</p>
+      <h1>Never let a low battery <span class="accent">end your experience.</span></h1>
+      <p class="lede">
+        Rent a fast-charging Juice Tech power bank, stay connected and keep
+        moving. Return it to <strong>any</strong> station in the network.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="/rent-a-power-bank">{{ bolt() }} Rent Now</a>
+        <a class="btn btn-ghost btn-lg" href="/event-hire">Book for an Event</a>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><strong>R{{ packages[0].price }}</strong><span>1 hour rental</span></div>
+        <div class="stat"><strong>3-in-1</strong><span>Built-in cables</span></div>
+        <div class="stat"><strong>24/7</strong><span>Station monitoring</span></div>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <img src="/static/img/station-hero.jpg" width="1280" height="1600"
+           alt="A glowing Juice Tech charging station full of power banks at a night-time event">
+
+      <!-- Filled in by home.js from /api/stations/{{ demo_station_id }}.
+           The numbers below are the fallback if the API is unreachable. -->
+      <div class="live-card" id="live-card" data-station="{{ demo_station_id }}">
+        <div class="live-head">
+          <span class="live-dot-wrap">
+            <span class="live-dot"><span></span><span></span></span>
+            <span class="live-status" id="live-status">Station online</span>
+          </span>
+          <span class="live-id" id="live-id">{{ demo_station_id }}</span>
+        </div>
+
+        <p class="live-venue" id="live-venue">Sea Point Promenade Market</p>
+
+        <div class="live-stats">
+          <div class="live-stat accent-stat">
+            <span class="live-stat-label">{{ battery() }} Available</span>
+            <p class="live-stat-value" id="live-available">&mdash;</p>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-label">{{ bolt("bolt") }} Rented</span>
+            <p class="live-stat-value" id="live-rented">&mdash;</p>
+          </div>
+        </div>
+
+        <div class="live-note">{{ bolt("bolt") }} Fast charging available</div>
+        <p class="live-foot" id="live-foot">Connecting to the station network&hellip;</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <p class="kicker">Why it matters</p>
+    <h2>A flat phone is more than an inconvenience.</h2>
+    <div class="cards cards-3">
+      {% for item in why %}
+        <article class="card">
+          <span class="icon-chip">
+            {% if loop.index == 1 %}{{ phone_off() }}
+            {% elif loop.index == 2 %}{{ shield() }}
+            {% else %}{{ camera() }}{% endif %}
+          </span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.body }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt reveal">
+  <div class="wrap">
+    <p class="kicker">How renting works</p>
+    <h2>Scan, verify, pay, charge &mdash; under a minute.</h2>
+    <ol class="steps">
+      {% for step in steps %}
+        <li><span class="step-num">{{ "%02d"|format(loop.index) }}</span>{{ step }}</li>
+      {% endfor %}
+    </ol>
+    <p class="center"><a class="btn btn-primary" href="/rent-a-power-bank">{{ qr() }} Start a rental</a></p>
+  </div>
+</section>
+
+<section class="section dark reveal">
+  <div class="wrap">
+    <p class="kicker">Built to be trusted</p>
+    <h2>Every rental is verified end to end.</h2>
+    <ul class="tick-grid">
+      {% for point in trust %}<li>{{ point }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <p class="kicker">What we do</p>
+    <h2>More than power banks.</h2>
+    <div class="cards cards-2">
+      {% for service in services %}
+        <article class="card">
+          <span class="icon-chip">{{ service_icon(service.title) }}</span>
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.body }}</p>
+          <a class="card-link" href="{{ service.url }}">{{ service.cta }} &rarr;</a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt reveal">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">FAQ</p>
+    <h2>Frequently asked questions</h2>
+    {% for faq in faqs %}
+      <details class="faq">
+        <summary>{{ faq.q }}</summary>
+        <p>{{ faq.a }}</p>
+      </details>
+    {% endfor %}
+    <p class="center"><a class="btn" href="/help-centre">Visit the Help Centre</a></p>
+  </div>
+</section>
+
+<section class="section dark reveal">
+  <div class="wrap wrap-narrow center">
+    <p class="kicker">Returning</p>
+    <h2>Done charging? Find the nearest station.</h2>
+    <p class="body-text light">
+      Return your power bank to any Juice Tech station with a free slot.
+    </p>
+    <p><a class="btn btn-primary btn-lg" href="/return">{{ pin() }} Find nearest station</a></p>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/home.js"></script>
+{% endblock %}

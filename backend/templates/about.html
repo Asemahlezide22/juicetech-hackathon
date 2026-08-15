@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}About us | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">About us</p>
+  <h1>Shared power, <span class="accent">built for South Africa.</span></h1>
+  <p class="lede">{{ about.intro }}</p>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="cards cards-2">
+      {% for point in about.points %}
+        <article class="card">
+          <h3>{{ point.title }}</h3>
+          <p>{{ point.body }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="wrap">
+    <p class="kicker">Safeguards</p>
+    <h2>How we protect customers</h2>
+    <ul class="tick-grid">
+      {% for point in trust %}<li>{{ point }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow center">
+    <h2>{{ brand.tagline_alt }}</h2>
+    <p class="body-text">{{ brand.location }}</p>
+    <a class="btn btn-primary" href="/contact">Get in touch</a>
+  </div>
+</section>
+
+{% endblock %}

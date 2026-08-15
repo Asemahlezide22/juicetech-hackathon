@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}How it works | Juice Tech{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">How it works</p>
+  <h1>Scan, verify, pay, <span class="accent">charge.</span></h1>
+  <p class="lede">Eight steps from a flat phone to a charged one.</p>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <ol class="steps">
+      {% for step in steps %}
+        <li><span class="step-num">{{ "%02d"|format(loop.index) }}</span>{{ step }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Returning</p>
+    <h2>Return it to any station.</h2>
+    <p class="body-text">
+      You are not tied to the station you collected from. Slide the power bank
+      into any empty slot until it clicks and wait for the on-screen
+      confirmation. If a station is full, the nearest one with a free slot is
+      one tap away.
+    </p>
+    <p class="center"><a class="btn btn-primary" href="/return">Find my nearest station</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">FAQ</p>
+    <h2>Common questions</h2>
+    {% for faq in faqs %}
+      <details class="faq">
+        <summary>{{ faq.q }}</summary>
+        <p>{{ faq.a }}</p>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
