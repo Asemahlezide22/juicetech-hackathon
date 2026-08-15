@@ -31,7 +31,16 @@ NAV = [
     {"label": "Contact Us", "url": "/contact"},
 ]
 
+# Four steps, not eight. Nobody reads eight.
 RENT_STEPS = [
+    "Scan the QR code on the station",
+    "Verify your number by OTP",
+    "Pay and collect your power bank",
+    "Return it to any station",
+]
+
+# The long version, for the How It Works page only.
+RENT_STEPS_DETAIL = [
     "Scan the QR code on the Juice Tech station",
     "Enter and verify your cellphone number using OTP",
     "Choose a rental package",
@@ -43,44 +52,29 @@ RENT_STEPS = [
 ]
 
 WHY_IT_MATTERS = [
-    {
-        "title": "Cut off when it matters",
-        "body": "No transport, no digital tickets, no mobile payments and no way "
-                "to reach the people you came with.",
-    },
-    {
-        "title": "A safety risk",
-        "body": "A phone with no charge means no way to call for help, share a "
-                "location or contact emergency services.",
-    },
-    {
-        "title": "Moments lost",
-        "body": "The photos, videos and memories of the day stop the second the "
-                "battery does.",
-    },
+    {"title": "No taxi fare", "body": "No transport, no tickets, no way to pay."},
+    {"title": "No help", "body": "A flat phone cannot call anyone."},
+    {"title": "No memories", "body": "The photos stop when the battery does."},
 ]
 
 SERVICES = [
     {
         "title": "Power bank rentals",
-        "body": "Self-service stations at markets, campuses, malls and taxi ranks. "
-                "Scan, verify, pay and go.",
+        "body": "Scan, pay, go. R150 an hour.",
         "url": "/rent-a-power-bank",
-        "cta": "Rent a power bank",
+        "cta": "Rent one",
     },
     {
         "title": "Event hire",
-        "body": "Stations, power banks, delivery, setup, collection and remote "
-                "monitoring for your event. From R3,500.",
+        "body": "Stations delivered, set up and monitored. From R3,500.",
         "url": "/event-hire",
-        "cta": "See event packages",
+        "cta": "See packages",
     },
     {
         "title": "Return anywhere",
-        "body": "Drop your power bank at any station with a free slot. The site "
-                "finds the closest one to you and shows the walk.",
+        "body": "We find the closest station with a free slot.",
         "url": "/return",
-        "cta": "Find nearest station",
+        "cta": "Find a station",
     },
 ]
 
@@ -200,45 +194,25 @@ TRUST_POINTS = [
     "Staff alerts and audit logs",
 ]
 
+# Four questions. Anything longer and nobody opens any of them.
 FAQS = [
     {
-        "q": "How much does it cost to rent a power bank?",
-        "a": "R150 for one hour and R250 for two hours. A refundable R500 security "
-             "deposit is held and released once the power bank is returned.",
+        "q": "What does it cost?",
+        "a": "R150 an hour, R250 for two. Plus a R500 deposit you get back "
+             "on return.",
     },
     {
-        "q": "How do I start a rental?",
-        "a": "Scan the QR code on any Juice Tech station, verify your cellphone "
-             "number with an OTP, choose your package, pay securely and collect "
-             "the power bank the station releases for you.",
+        "q": "Where do I return it?",
+        "a": "Any station with a free slot. The Return page finds the closest one.",
     },
     {
-        "q": "Which cables are included?",
-        "a": "Every Juice Tech power bank has built-in Micro-USB, USB-C and "
-             "Lightning cables, so you don't need to carry your own.",
+        "q": "What if I'm late?",
+        "a": "15 minutes grace, then R75 per half hour. Never more than R750.",
     },
     {
-        "q": "What happens if I return it late?",
-        "a": "A 15-minute grace period applies. After that a late fee of R75 per "
-             "additional 30 minutes may be charged, capped at the disclosed "
-             "replacement value.",
-    },
-    {
-        "q": "When do I get my deposit back?",
-        "a": "The deposit is released as soon as the station confirms the correct "
-             "power bank has been returned. Bank processing times may affect when "
-             "the refund reflects in your account.",
-    },
-    {
-        "q": "Can I hire Juice Tech for my event?",
-        "a": "Yes. Packages start at R3,500 for a single station for up to 8 hours, "
-             "including delivery, setup, collection and remote monitoring within "
-             "Cape Town.",
-    },
-    {
-        "q": "Where can I return a power bank?",
-        "a": "Any Juice Tech station with a free slot — not just the one you "
-             "collected from. Use the Return page to find the nearest one.",
+        "q": "Is my phone safe?",
+        "a": "Our cables carry power only. The data pins are physically absent, "
+             "so nothing can read your phone.",
     },
 ]
 

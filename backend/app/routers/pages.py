@@ -76,7 +76,13 @@ def rent(request: Request):
 
 @router.get("/how-it-works", include_in_schema=False)
 def how_it_works(request: Request):
-    return render(request, "how-it-works.html", steps=content.RENT_STEPS, faqs=content.FAQS)
+    # The only page that earns the full eight-step version.
+    return render(
+        request,
+        "how-it-works.html",
+        steps=content.RENT_STEPS_DETAIL,
+        faqs=content.FAQS,
+    )
 
 
 @router.get("/return", include_in_schema=False)

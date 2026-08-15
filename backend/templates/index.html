@@ -12,8 +12,8 @@
   <div class="wrap">
     <div class="hero-intro">
       <p>
-        We keep South Africa connected with shared power banks at the places
-        people actually gather &mdash; taxi ranks, campuses, markets and events.
+        Shared power banks where people actually gather &mdash; taxi ranks,
+        campuses, markets, events.
       </p>
       <p><strong>Return it to any station with a free slot.</strong></p>
     </div>
@@ -48,10 +48,10 @@
     <div class="hero-split">
     <div>
       <p class="kicker">Live right now</p>
-      <h2>The network reports itself.</h2>
+      <h2>Not a mockup.</h2>
       <p class="body-text light">
-        This card is not a mockup. It polls the Juice Tech API every ten
-        seconds, so the counts move when somebody rents or returns a bank.
+        These counts come from the API every ten seconds. Rent a bank and
+        watch them move.
       </p>
       <p><a class="btn btn-primary" href="/ai">{{ bolt() }} See how the AI runs it</a></p>
     </div>
@@ -92,7 +92,7 @@
 <section class="section reveal">
   <div class="wrap">
     <p class="kicker">Why it matters</p>
-    <h2>A flat phone is more than an inconvenience.</h2>
+    <h2>A flat phone strands you.</h2>
     <div class="cards cards-3">
       {% for item in why %}
         <article class="card">
@@ -111,24 +111,14 @@
 
 <section class="section alt reveal">
   <div class="wrap">
-    <p class="kicker">How renting works</p>
-    <h2>Scan, verify, pay, charge &mdash; under a minute.</h2>
+    <p class="kicker">How it works</p>
+    <h2>Under a minute.</h2>
     <ol class="steps">
       {% for step in steps %}
         <li><span class="step-num">{{ "%02d"|format(loop.index) }}</span>{{ step }}</li>
       {% endfor %}
     </ol>
     <p class="center"><a class="btn btn-primary" href="/rent-a-power-bank">{{ qr() }} Start a rental</a></p>
-  </div>
-</section>
-
-<section class="section dark reveal">
-  <div class="wrap">
-    <p class="kicker">Built to be trusted</p>
-    <h2>Every rental is verified end to end.</h2>
-    <ul class="tick-grid">
-      {% for point in trust %}<li>{{ point }}</li>{% endfor %}
-    </ul>
   </div>
 </section>
 
@@ -152,7 +142,7 @@
 <section class="section alt reveal">
   <div class="wrap wrap-narrow">
     <p class="kicker">FAQ</p>
-    <h2>Frequently asked questions</h2>
+    <h2>Quick answers</h2>
     {% for faq in faqs %}
       <details class="faq">
         <summary>{{ faq.q }}</summary>
@@ -165,11 +155,7 @@
 
 <section class="section dark reveal">
   <div class="wrap wrap-narrow center">
-    <p class="kicker">Returning</p>
-    <h2>Done charging? Find the nearest station.</h2>
-    <p class="body-text light">
-      Return your power bank to any Juice Tech station with a free slot.
-    </p>
+    <h2>Done charging?</h2>
     <p><a class="btn btn-primary btn-lg" href="/return">{{ pin() }} Find nearest station</a></p>
   </div>
 </section>
