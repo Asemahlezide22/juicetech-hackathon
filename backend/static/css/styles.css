@@ -36,7 +36,11 @@ body {
   line-height: 1.6;
   color: var(--ink);
   background: var(--white);
-  overflow-x: hidden;
+
+  /* clip, not hidden. overflow-x: hidden turns body into a scroll container,
+     which is what stops the sticky header sticking in some browsers. clip
+     contains the same horizontal overflow without that side effect. */
+  overflow-x: clip;
 }
 
 a { color: inherit; }
