@@ -65,7 +65,6 @@ def home(request: Request):
         steps=content.RENT_STEPS,
         services=content.SERVICES,
         trust=content.TRUST_POINTS,
-        faqs=content.FAQS,
     )
 
 
@@ -77,12 +76,7 @@ def rent(request: Request):
 @router.get("/how-it-works", include_in_schema=False)
 def how_it_works(request: Request):
     # The only page that earns the full eight-step version.
-    return render(
-        request,
-        "how-it-works.html",
-        steps=content.RENT_STEPS_DETAIL,
-        faqs=content.FAQS,
-    )
+    return render(request, "how-it-works.html", steps=content.RENT_STEPS_DETAIL)
 
 
 @router.get("/return", include_in_schema=False)

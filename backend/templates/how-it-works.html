@@ -33,17 +33,4 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap wrap-narrow">
-    <p class="kicker">FAQ</p>
-    <h2>Common questions</h2>
-    {% for faq in faqs %}
-      <details class="faq">
-        <summary>{{ faq.q }}</summary>
-        <p>{{ faq.a }}</p>
-      </details>
-    {% endfor %}
-  </div>
-</section>
-
 {% endblock %}

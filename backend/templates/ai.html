@@ -203,48 +203,17 @@
 </section>
 
 <section class="section reveal">
-  <div class="wrap wrap-narrow">
+  <div class="wrap wrap-narrow center">
     <p class="kicker">{{ shield() }} Ask Juice</p>
     <h2>The customer assistant</h2>
     <p class="body-text">
       Grounded in our own published policy documents, so it cannot invent a
       refund rule we never agreed to. Every message is <strong>redacted before
-      it leaves this machine</strong> — try typing an ID or card number and see
-      what actually gets sent.
+      it leaves this machine</strong> &mdash; open the chat and type an ID or
+      card number to see what actually gets sent.
     </p>
-
-    <form class="ai-chat" id="ai-chat">
-      <div class="field">
-        <label for="q">Your question</label>
-        <input id="q" name="q" type="text" required
-               placeholder="How much does it cost, and is my phone safe?">
-      </div>
-      <div class="field">
-        <label for="lang">Language</label>
-        <select id="lang" name="lang">
-          {% for l in ["English", "isiXhosa", "Afrikaans", "isiZulu", "Sesotho"] %}
-            <option value="{{ l }}">{{ l }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <button class="btn btn-primary" type="submit">Ask</button>
-    </form>
-
-    <div id="ai-answer" class="ai-answer" hidden>
-      <p class="ai-reply" id="ai-reply"></p>
-      <p class="ai-redacted" id="ai-redacted" hidden></p>
-      <details class="faq" id="ai-sources-wrap" hidden>
-        <summary>Policy passages this answer used</summary>
-        <div id="ai-sources"></div>
-      </details>
-    </div>
-
     <p class="muted-text">Language model: {{ llm_status }}</p>
   </div>
 </section>
 
-{% endblock %}
-
-{% block scripts %}
-<script src="/static/js/ai.js"></script>
 {% endblock %}

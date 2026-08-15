@@ -24,7 +24,6 @@ NAV = [
     {"label": "Rent a Power Bank", "url": "/rent-a-power-bank"},
     {"label": "How It Works", "url": "/how-it-works"},
     {"label": "Return", "url": "/return"},
-    {"label": "AI Operations", "url": "/ai"},
     {"label": "Services", "url": "/services"},
     {"label": "Event Hire", "url": "/event-hire"},
     {"label": "About Us", "url": "/about"},
@@ -145,25 +144,8 @@ TRUST_POINTS = [
     "No ID document, ever",
 ]
 
-# Four questions. Anything longer and nobody opens any of them.
-FAQS = [
-    {
-        "q": "What does it cost?",
-        "a": "R150 an hour, R250 for two. Plus a R500 deposit you get back "
-             "on return.",
-    },
-    {
-        "q": "Where do I return it?",
-        "a": "Any station with a free slot. The Return page finds the closest one.",
-    },
-    {
-        "q": "What if I'm late?",
-        "a": "15 minutes grace, then R75 per half hour. Never more than R750.",
-    },
-    {
-        "q": "Is my phone safe?",
-        "a": "Our cables carry power only. The data pins are physically absent, "
-             "so nothing can read your phone.",
-    },
-]
+# There is no FAQ list any more. Those questions — cost, where to return,
+# late fees, phone safety — are what the Ask Juice chat answers, from the
+# policy documents in app/policies/, and in five languages rather than one.
+# Edit the policy document to change an answer.
 
