@@ -21,7 +21,7 @@ from pathlib import Path
 from fastapi import APIRouter, Body, Query, Request
 from fastapi.templating import Jinja2Templates
 
-from .. import content
+from .. import assets, content
 from ..intelligence import fleet, llm, service
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
@@ -139,6 +139,7 @@ def ai_page(
         context={
             "brand": content.BRAND,
             "nav": content.NAV,
+            "asset_version": assets.version(),
             "current_url": request.url.path,
             "stage": stage,
             "rain": rain,

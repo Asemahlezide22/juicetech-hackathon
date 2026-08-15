@@ -108,6 +108,6 @@
 
 {% block scripts %}
 {% if rental.payment_method == "scan" %}
-<script src="/static/js/kiosk-countdown.js"></script>
+<script src="/static/js/kiosk-countdown.js?v={{ asset_version }}"></script>
 {% endif %}
 {% endblock %}

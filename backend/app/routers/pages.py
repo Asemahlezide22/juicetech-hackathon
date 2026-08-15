@@ -12,7 +12,7 @@ from pathlib import Path
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
-from .. import config, content
+from .. import assets, config, content
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 templates = Jinja2Templates(directory=str(BACKEND_DIR / "templates"))
@@ -40,6 +40,7 @@ def render(request: Request, name: str, **extra):
     context = {
         "brand": content.BRAND,
         "nav": content.NAV,
+        "asset_version": assets.version(),
         "current_url": request.url.path,
         "packages": list(config.PACKAGES.values()),
         "deposit": config.DEPOSIT,

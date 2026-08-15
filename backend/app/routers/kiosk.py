@@ -18,6 +18,7 @@ from fastapi.templating import Jinja2Templates
 from qrcode.image.svg import SvgPathImage
 from sqlmodel import Session as DBSession
 
+from .. import assets
 from .. import demo_config as cfg
 from .. import demo_service as svc
 from ..config import utcnow
@@ -34,6 +35,7 @@ def render(request: Request, name: str, **extra):
     """Render a kiosk template with the context every screen needs."""
     context = {
         "cfg": cfg,
+        "asset_version": assets.version(),
         "badge": cfg.DEMO_BADGE,
         "disclaimer": cfg.DEMO_DISCLAIMER,
         "tagline": cfg.TAGLINE,
