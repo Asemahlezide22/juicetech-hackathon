@@ -15,10 +15,14 @@ fallback and the app carries on.
 
 from __future__ import annotations
 
+import logging
+
 import pandas as pd
 
 from . import llm
 from . import retrieve
+
+logger = logging.getLogger(__name__)
 
 # Pricing is read from the single source of truth rather than restated here.
 # The assistant previously quoted a per-minute tariff the site never charged,
@@ -65,12 +69,16 @@ HARD RULES
   this on a feature phone.
 """
 
+# Answered from the policy documents on this machine, with no model call. This
+# is the offline path, and it is deliberate: a customer at a taxi rank with no
+# data, or a venue whose wifi has died, still gets the real answer. It must
+# therefore read as an answer, not as an apology for a broken service.
 FALLBACK_CONCIERGE = (
-    f"I can't reach the network right now, so here's the short version: "
-    f"R{_ONE_HOUR} for an hour, R{_TWO_HOUR} for two, plus a refundable "
-    f"R{DEPOSIT} deposit you get back on return. Return the bank to any Juice "
-    f"Tech cabinet with a free slot. Our cables carry power only, so nothing can "
-    f"touch your phone's data. Reply HELP to reach a human."
+    f"Answering offline, straight from our policies: R{_ONE_HOUR} for an hour, "
+    f"R{_TWO_HOUR} for two, plus a refundable R{DEPOSIT} deposit you get back on "
+    f"return. Return the bank to any Juice Tech cabinet with a free slot. Our "
+    f"cables carry power only, so nothing can touch your phone's data. Reply "
+    f"HELP to reach a human."
 )
 
 FALLBACK_BRIEFING = (
@@ -81,12 +89,20 @@ FALLBACK_BRIEFING = (
 
 
 def _safe(system: str, user: str, fallback: str, max_tokens: int = 700) -> str:
-    """Ask the model, but never let a network failure take the demo down."""
+    """Ask the model, but never let a network failure take the demo down.
+
+    The failure is logged for whoever is running the service, not shown to the
+    customer. Appending something like "(model unreachable: KeyError)" to a
+    reply hands a person a Python exception class and makes a deliberate
+    offline answer look like a crash.
+    """
     try:
         reply = llm.ask(system, user, max_tokens=max_tokens)
         return reply.strip() if reply and reply.strip() else fallback
-    except Exception as exc:  # noqa: BLE001 - any failure means fall back, loudly but safely
-        return f"{fallback}\n\n_(model unreachable: {type(exc).__name__})_"
+    except Exception as exc:  # noqa: BLE001 - any failure falls back to the policies
+        logger.warning("Language model unreachable (%s); answered from policies",
+                       type(exc).__name__)
+        return fallback
 
 
 def ops_briefing(board: pd.DataFrame, moves: pd.DataFrame, stage: int,
