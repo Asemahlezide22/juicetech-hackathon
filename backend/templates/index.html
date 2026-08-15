@@ -5,58 +5,39 @@
 
 {% block content %}
 
-<section class="hero hero-cinematic">
-  <span class="hero-bg" aria-hidden="true"></span>
-  <span class="hero-scrim" aria-hidden="true"></span>
+<section class="hero hero-home">
+  <div class="hero-split">
 
-  <div class="wrap">
-    <div class="hero-intro">
-      <p>
-        Shared power banks where people actually gather &mdash; taxi ranks,
-        campuses, markets, events.
+    <div class="hero-copy">
+      <p class="eyebrow">{{ bolt() }} {{ brand.tagline }}</p>
+
+      <h1 class="hero-display">
+        Never let a low battery
+        <span class="shiny">end your experience.</span>
+      </h1>
+
+      <p class="lede">
+        Rent a fast-charging Juice Tech power bank, stay connected and keep
+        moving. Return it to any station.
       </p>
-      <p><strong>Return it to any station with a free slot.</strong></p>
-    </div>
-  </div>
 
-  <div class="wrap hero-stage">
-    <p class="hero-kicker">{{ brand.tagline }}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="/rent-a-power-bank">{{ bolt() }} Rent Now</a>
+        <a class="btn btn-ghost btn-lg" href="/event-hire">Book Juice Tech for an Event</a>
+      </div>
 
-    <h1 class="hero-display">
-      <span class="line line-1">Never let a low battery</span>
-      <span class="line"><span class="shiny">end your experience.</span></span>
-    </h1>
-
-    <div class="hero-cta-row">
-      <a class="btn btn-primary btn-lg" href="/rent-a-power-bank">{{ bolt() }} Rent Now</a>
-      <a class="btn btn-ghost btn-lg" href="/return">{{ pin() }} Return a Power Bank</a>
+      <div class="stat-row">
+        <div class="stat"><strong>R{{ packages[0].price }}</strong><span>1 hour rental</span></div>
+        <div class="stat"><strong>3-in-1</strong><span>Built-in cables</span></div>
+        <div class="stat"><strong>24/7</strong><span>Station monitoring</span></div>
+      </div>
     </div>
 
-    <div class="hero-strip">
-      <div class="stat"><strong>R{{ packages[0].price }}</strong><span>1 hour rental</span></div>
-      <div class="stat"><strong>3-in-1</strong><span>Built-in cables</span></div>
-      <div class="stat"><strong>24/7</strong><span>Station monitoring</span></div>
-    </div>
+    <!-- Station photo with the live card floating over its lower-left. -->
+    <div class="hero-art">
+      <img src="/static/img/station-hero.jpg" width="1280" height="1600"
+           alt="A glowing Juice Tech charging station full of power banks at a night-time event">
 
-    <span class="scroll-hint" aria-hidden="true"></span>
-  </div>
-</section>
-
-<!-- Live station card, moved below the hero so it gets room to breathe. -->
-<section class="section dark reveal">
-  <div class="wrap">
-    <div class="hero-split">
-    <div>
-      <p class="kicker">Live right now</p>
-      <h2>Not a mockup.</h2>
-      <p class="body-text light">
-        These counts come from the API every ten seconds. Rent a bank and
-        watch them move.
-      </p>
-      <p><a class="btn btn-primary" href="/ai">{{ bolt() }} See how the AI runs it</a></p>
-    </div>
-
-    <div>
       <!-- Filled in by home.js from /api/stations/{{ demo_station_id }}.
            The numbers below are the fallback if the API is unreachable. -->
       <div class="live-card" id="live-card" data-station="{{ demo_station_id }}">
@@ -82,10 +63,15 @@
         </div>
 
         <div class="live-note">{{ bolt("bolt") }} Fast charging available</div>
+
+        <div class="live-foot-row">
+          <span class="live-foot-item">{{ qr("") }} Scan QR code to begin</span>
+          <span class="live-foot-item" id="live-signal">4/5</span>
+        </div>
         <p class="live-foot" id="live-foot">Connecting to the station network&hellip;</p>
       </div>
     </div>
-    </div>
+
   </div>
 </section>
 

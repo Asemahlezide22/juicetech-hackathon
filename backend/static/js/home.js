@@ -18,6 +18,7 @@
     venue: document.getElementById("live-venue"),
     available: document.getElementById("live-available"),
     rented: document.getElementById("live-rented"),
+    signal: document.getElementById("live-signal"),
     foot: document.getElementById("live-foot"),
   };
 
@@ -54,6 +55,8 @@
 
     els.status.textContent = station.online ? "Station online" : "Station offline";
     els.status.style.color = station.online ? "" : "var(--dim)";
+
+    if (els.signal) els.signal.textContent = station.signal + "/5";
 
     els.foot.textContent = "Live from the station network";
   }
