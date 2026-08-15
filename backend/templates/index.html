@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<section class="hero hero-home">
+<section class="hero hero-home" data-nav="/">
   <div class="hero-split">
 
     <div class="hero-copy">
@@ -95,7 +95,7 @@
   </div>
 </section>
 
-<section class="section alt reveal">
+<section class="section alt reveal" id="how-it-works" data-nav="/how-it-works">
   <div class="wrap">
     <p class="kicker">How it works</p>
     <h2>Under a minute.</h2>
@@ -108,7 +108,7 @@
   </div>
 </section>
 
-<section class="section reveal">
+<section class="section reveal" id="services" data-nav="/services">
   <div class="wrap">
     <p class="kicker">What we do</p>
     <h2>More than power banks.</h2>
@@ -136,7 +136,7 @@
   </div>
 </section>
 
-<section class="section dark reveal">
+<section class="section dark reveal" id="return" data-nav="/return">
   <div class="wrap wrap-narrow center">
     <h2>Done charging?</h2>
     <p><a class="btn btn-primary btn-lg" href="/return">{{ pin() }} Find nearest station</a></p>
