@@ -84,12 +84,9 @@ EVENT_PACKAGES = [
         "price": "R3,500",
         "featured": False,
         "features": [
-            "One station",
+            "1 station, 12 power banks",
             "Up to 8 hours",
-            "12 power banks",
-            "Delivery within Cape Town",
-            "Setup and collection",
-            "Remote monitoring",
+            "Delivery, setup, collection",
         ],
     },
     {
@@ -97,25 +94,9 @@ EVENT_PACKAGES = [
         "price": "R5,500",
         "featured": True,
         "features": [
-            "One station",
+            "1 station, up to 24 power banks",
             "Up to 12 hours",
-            "12–24 power banks",
-            "Digital advertising screen",
-            "Setup and collection",
-            "Remote monitoring",
-        ],
-    },
-    {
-        "name": "Premium Event",
-        "price": "R8,500",
-        "featured": False,
-        "features": [
-            "Two stations",
-            "Up to 12 hours",
-            "Up to 48 power banks",
-            "Advertising screens",
-            "Setup and collection",
-            "One on-site support assistant",
+            "Delivery, setup, collection",
         ],
     },
     {
@@ -123,64 +104,36 @@ EVENT_PACKAGES = [
         "price": "From R15,000",
         "featured": False,
         "features": [
-            "Multiple stations",
-            "48+ power banks",
+            "Multiple stations, 48+ banks",
             "On-site support",
-            "Sponsor branding",
-            "Event reporting",
             "Custom quote",
         ],
     },
-    {
-        "name": "Weekend Hire",
-        "price": "From R10,500",
-        "featured": False,
-        "features": [
-            "One station Friday–Sunday",
-            "Up to 24 power banks",
-            "Remote monitoring",
-            "Setup and collection",
-        ],
-    },
 ]
 
+# Four lines, not ten. Anything else is a conversation, not a price list.
 EVENT_EXTRAS = [
-    ("Additional station", "R2,500 – R3,500 / day"),
-    ("Additional 12 power banks", "R1,500 / day"),
-    ("On-site assistant", "R1,800 for up to 8 hours"),
-    ("Additional staff hour", "R250 / hour"),
-    ("Custom station branding", "from R1,500"),
-    ("Advert displayed on screen", "from R1,000 / event"),
-    ("Exclusive screen sponsorship", "R3,500 – R7,500 / event"),
-    ("Detailed post-event report", "R750"),
-    ("Delivery outside central Cape Town", "Custom quote"),
-    ("Overnight or multi-day event", "Custom quote"),
+    ("Extra station", "R2,500 – R3,500 / day"),
+    ("Extra 12 power banks", "R1,500 / day"),
+    ("On-site assistant", "R1,800 for 8 hours"),
+    ("Outside central Cape Town", "Custom quote"),
 ]
 
 ABOUT = {
-    "intro": "Juice Tech is a South African shared power bank network. One "
-             "charged bank serves several people a day instead of sitting in "
-             "one person's drawer.",
+    "intro": "One charged bank serves several people a day, instead of sitting "
+             "flat in one person's drawer.",
     "points": [
         {
-            "title": "Built for South Africa",
-            "body": "Loadshedding, long commutes and outdoor markets are the "
-                    "normal conditions here, not edge cases.",
+            "title": "Built for here",
+            "body": "Loadshedding and long commutes are normal, not edge cases.",
         },
         {
             "title": "Shared, not sold",
-            "body": "Renting by the hour beats buying a power bank that spends "
-                    "most of its life flat in a drawer.",
+            "body": "Rent by the hour. Don't buy a brick you'll never charge.",
         },
         {
-            "title": "Safety first",
-            "body": "Power-only cables with the data pins physically absent, so "
-                    "a charging station can never read your phone.",
-        },
-        {
-            "title": "POPIA-native",
-            "body": "No ID document, no stored card. Personal data is minimised "
-                    "at the point of capture.",
+            "title": "Safe by design",
+            "body": "Power-only cables. The data pins are physically absent.",
         },
     ],
 }
@@ -189,9 +142,7 @@ TRUST_POINTS = [
     "OTP cellphone verification",
     "Payment confirmed before release",
     "Refundable R500 deposit",
-    "Unique customer-to-battery assignment",
-    "Automated return reminders",
-    "Staff alerts and audit logs",
+    "No ID document, ever",
 ]
 
 # Four questions. Anything longer and nobody opens any of them.
