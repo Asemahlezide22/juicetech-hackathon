@@ -24,7 +24,7 @@ PACKAGES = {
 }
 
 # Refundable security deposit held for the duration of a rental.
-DEPOSIT = 500
+DEPOSIT = 300
 
 # Charged when a power bank is never returned.
 REPLACEMENT_FEE = 750

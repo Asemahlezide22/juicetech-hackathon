@@ -79,7 +79,7 @@ status, pricing = call("GET", "/api/pricing")
 check("pricing returns 200", status == 200)
 check("1 hour costs R150", pricing["packages"][0]["price"] == 150, str(pricing))
 check("2 hours costs R250", pricing["packages"][1]["price"] == 250)
-check("deposit is R500", pricing["deposit"] == 500)
+check("deposit is R300", pricing["deposit"] == 300)
 check("late fee is R75 / 30 min", pricing["late_fee_per_30"] == 75)
 
 # 3. Stations
@@ -176,7 +176,7 @@ if status != 201:
     raise SystemExit(1)
 
 check("price charged is R150", rental["price"] == 150)
-check("deposit held is R500", rental["deposit"] == 500)
+check("deposit held is R300", rental["deposit"] == 300)
 check("a power bank was assigned", bool(rental["power_bank_id"]))
 check("status is active", rental["status"] == "active")
 check("about 60 minutes remaining", 58 <= rental["minutes_remaining"] <= 60,

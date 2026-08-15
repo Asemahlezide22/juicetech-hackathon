@@ -133,7 +133,7 @@ backend/
 ### Business rules
 
 - **R150** for 1 hour, **R250** for 2 hours
-- **R500** refundable deposit per rental
+- **R300** refundable deposit per rental
 - **15 minutes** grace after the due time, then **R75 per 30 minutes** started
 - Late fees never exceed the **R750** replacement fee
 - One active rental per cellphone number

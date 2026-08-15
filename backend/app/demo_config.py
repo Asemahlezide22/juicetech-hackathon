@@ -41,7 +41,7 @@ PLANS = {
 }
 
 # Refundable, released when the power bank comes back.
-DEPOSIT = 500
+DEPOSIT = 300
 
 PAYMENT_METHODS = [
     {"id": "card", "label": "Card", "hint": "Visa, Mastercard"},

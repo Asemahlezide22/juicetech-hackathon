@@ -35,7 +35,7 @@ Do **not** open with "we built a website".
 
 ### 3. Solution (30 sec)
 Scan a QR on the cabinet, verify by OTP, pay, take a bank, return it to **any**
-station. R150 an hour, R250 for two, R500 refundable deposit.
+station. R150 an hour, R250 for two, R300 refundable deposit.
 
 Then the differentiator, in one line:
 **"The interesting part isn't the rental. It's that the network predicts itself."**
@@ -57,7 +57,7 @@ Never start a demo by starting a server.
 | # | Do this | Say this |
 |---|---|---|
 | 1 | `/kiosk?station=JUICE-QR-001` | "This is what you get when you scan the cabinet. 11 banks available, live." |
-| 2 | Tap **Start Rental** → pick **Two hours** | "R250, plus a R500 refundable deposit. You see the total before you commit — R750." |
+| 2 | Tap **Start Rental** → pick **Two hours** | "R250, plus a R300 refundable deposit. You see the total before you commit — R550." |
 | 3 | Tap **Use demo details** → Continue | "No ID number. Ever. A cellphone number is all we ask." |
 | 4 | Choose **Card** | "Every payment here is simulated — and look, there is nowhere to type a card. We only *display* the test number. You physically cannot enter a real one." |
 | 5 | **Simulate Successful Payment** | *(say nothing — let the dispensing animation play)* |

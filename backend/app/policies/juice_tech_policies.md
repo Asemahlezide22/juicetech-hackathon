@@ -12,7 +12,7 @@ than invent one.
 
 - **One hour costs R150. Two hours cost R250.** You choose the package before
   the cabinet releases a bank, so you know the price before you commit.
-- A **refundable R500 deposit** is held for the duration of the rental and
+- A **refundable R300 deposit** is held for the duration of the rental and
   released as soon as a cabinet confirms the correct bank has come back. Bank
   processing can take a few working days to reflect.
 - **A 15-minute grace period** applies after your time is up. After that, a late

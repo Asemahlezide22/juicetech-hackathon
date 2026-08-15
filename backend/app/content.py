@@ -140,7 +140,7 @@ ABOUT = {
 TRUST_POINTS = [
     "OTP cellphone verification",
     "Payment confirmed before release",
-    "Refundable R500 deposit",
+    "Refundable R300 deposit",
     "No ID document, ever",
 ]
 

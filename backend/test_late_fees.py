@@ -30,7 +30,7 @@ def rental_due_at(minutes: int) -> Rental:
         package_id="1h",
         minutes=minutes,
         price=150,
-        deposit=500,
+        deposit=300,
         station_id="JT-CPT-001",
         power_bank_id="PB-001-001",
         started_at=START,
