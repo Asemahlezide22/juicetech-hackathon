@@ -24,7 +24,6 @@ NAV = [
     {"label": "Rent a Power Bank", "url": "/rent-a-power-bank"},
     {"label": "How It Works", "url": "/how-it-works"},
     {"label": "Return", "url": "/return"},
-    {"label": "Services", "url": "/services"},
     {"label": "Event Hire", "url": "/event-hire"},
     {"label": "Safety", "url": "/safety"},
     {"label": "About Us", "url": "/about"},

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img"
+     aria-labelledby="sjTitle sjDesc">
+  <title id="sjTitle">A charged phone is a way home</title>
+  <desc id="sjDesc">A lit Juice Tech cabinet on a night street, a person walking
+    home along a lit pavement holding a glowing phone, and a house ahead with a
+    light on in the window.</desc>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d0d14"/>
+      <stop offset="100%" stop-color="#16161d"/>
+    </linearGradient>
+
+    <radialGradient id="lampGlow">
+      <stop offset="0%" stop-color="#ffd400" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffd400" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="phoneGlow">
+      <stop offset="0%" stop-color="#ffd400" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="#ffd400" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="cabinetScreen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe775"/>
+      <stop offset="100%" stop-color="#e8b800"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="400" fill="url(#sky)"/>
+
+  <!-- Stars -->
+  <g fill="#ffffff" opacity=".35">
+    <circle cx="120" cy="48" r="1.6"/><circle cx="238" cy="30" r="1.1"/>
+    <circle cx="392" cy="58" r="1.4"/><circle cx="520" cy="26" r="1"/>
+    <circle cx="648" cy="52" r="1.5"/><circle cx="757" cy="34" r="1.1"/>
+    <circle cx="828" cy="70" r="1.3"/><circle cx="63" cy="88" r="1"/>
+  </g>
+
+  <!-- Pools of light from the street lamps: the route home is lit the whole way -->
+  <ellipse cx="250" cy="330" rx="130" ry="34" fill="url(#lampGlow)"/>
+  <ellipse cx="530" cy="330" rx="130" ry="34" fill="url(#lampGlow)"/>
+  <ellipse cx="790" cy="330" rx="110" ry="30" fill="url(#lampGlow)"/>
+
+  <!-- Pavement -->
+  <rect x="0" y="326" width="900" height="74" fill="#1b1b23"/>
+  <line x1="0" y1="326" x2="900" y2="326" stroke="#2c2c37" stroke-width="2"/>
+
+  <!-- Street lamps -->
+  <g stroke="#3a3a46" stroke-width="4" fill="none">
+    <path d="M250 326 V196 h-26"/>
+    <path d="M530 326 V196 h-26"/>
+    <path d="M790 326 V210 h-22"/>
+  </g>
+  <g fill="#ffd400">
+    <circle cx="222" cy="196" r="6"/>
+    <circle cx="502" cy="196" r="6"/>
+    <circle cx="766" cy="210" r="5"/>
+  </g>
+
+  <!-- Juice Tech cabinet, glowing, where the journey starts -->
+  <g transform="translate(70 150)">
+    <ellipse cx="52" cy="180" rx="70" ry="16" fill="#ffd400" opacity=".22"/>
+    <rect x="6" y="0" width="92" height="178" rx="12" fill="#101017"
+          stroke="#33333f" stroke-width="2"/>
+    <rect x="18" y="14" width="68" height="46" rx="6" fill="url(#cabinetScreen)"/>
+    <g fill="#ffd400" opacity=".9">
+      <rect x="20" y="72" width="9" height="24" rx="3"/>
+      <rect x="34" y="72" width="9" height="24" rx="3"/>
+      <rect x="48" y="72" width="9" height="24" rx="3"/>
+      <rect x="62" y="72" width="9" height="24" rx="3"/>
+      <rect x="76" y="72" width="9" height="24" rx="3"/>
+      <rect x="20" y="104" width="9" height="24" rx="3"/>
+      <rect x="34" y="104" width="9" height="24" rx="3"/>
+      <rect x="48" y="104" width="9" height="24" rx="3"/>
+      <rect x="62" y="104" width="9" height="24" rx="3"/>
+      <rect x="76" y="104" width="9" height="24" rx="3"/>
+    </g>
+    <rect x="94" y="20" width="5" height="140" rx="2" fill="#ffd400" opacity=".75"/>
+  </g>
+
+  <!-- The walk home. A figure, phone lit in her hand. -->
+  <g transform="translate(430 196)">
+    <!-- phone light spilling onto her -->
+    <circle cx="34" cy="62" r="46" fill="url(#phoneGlow)"/>
+
+    <g fill="#2f2f3b">
+      <circle cx="14" cy="8" r="13"/>                       <!-- head -->
+      <path d="M2 24 h24 l7 46 h-38 z"/>                    <!-- coat -->
+      <path d="M-1 70 l7 56 h9 l2-56 z"/>                   <!-- leg back -->
+      <path d="M20 70 l12 52 8 4 -8-56 z"/>                 <!-- leg forward -->
+      <path d="M25 30 l12 26 -8 6 -12-24 z"/>               <!-- arm holding phone -->
+    </g>
+
+    <!-- the phone, alive -->
+    <rect x="30" y="52" width="12" height="20" rx="3" fill="#ffd400"/>
+    <rect x="32" y="55" width="8" height="14" rx="2" fill="#fffbe6"/>
+  </g>
+
+  <!-- Home, with the light on -->
+  <g transform="translate(700 214)">
+    <path d="M0 40 L52 0 L104 40 V112 H0 Z" fill="#181820" stroke="#33333f" stroke-width="2"/>
+    <rect x="34" y="60" width="36" height="30" rx="3" fill="#ffd400" opacity=".92"/>
+    <rect x="46" y="90" width="16" height="22" rx="2" fill="#26262f"/>
+    <line x1="52" y1="60" x2="52" y2="90" stroke="#181820" stroke-width="2"/>
+    <line x1="34" y1="75" x2="70" y2="75" stroke="#181820" stroke-width="2"/>
+  </g>
+
+  <!-- The route: cabinet to front door, dotted, unbroken -->
+  <path d="M175 352 H690" stroke="#ffd400" stroke-width="2.5" stroke-linecap="round"
+        stroke-dasharray="2 14" opacity=".65"/>
+</svg>

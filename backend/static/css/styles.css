@@ -786,17 +786,15 @@ img { max-width: 100%; display: block; }
   margin-top: 20px;
 }
 
-/* Anchored to the lower-right of the photo. Kept inside the column edge so it
-   cannot be clipped by the body's overflow-x: clip. */
+/* Anchored to the lower-left. The photo is right-aligned in its column, so on
+   a wide screen the two sit side by side and neither covers the other. On a
+   narrower one the card laps the edge of the photo rather than the cabinet. */
 @media (min-width: 900px) {
   .hero-art .live-card {
     position: absolute;
-    right: -28px;
-    bottom: 5%;
-    /* Narrower on the right than it was on the left: anchored here it sits
-       over the cabinet itself, so every extra pixel of width hides the thing
-       the photograph is of. */
-    width: min(268px, 52%);
+    left: -60px;
+    bottom: 6%;
+    width: min(300px, 62%);
     margin-top: 0;
     padding: 18px;
     background: rgba(14, 14, 18, .88);
@@ -1059,6 +1057,29 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 1180px) {
   .site-nav.is-pill { border-radius: 18px; padding: 8px 14px; }
+}
+
+/* ---------- Safety illustration ---------- */
+
+.safety-figure {
+  max-width: 900px;
+  margin: 34px auto 0;
+  padding: 0;
+}
+
+.safety-figure img {
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 28px 60px -26px rgba(0, 0, 0, .9);
+}
+
+.safety-figure figcaption {
+  margin-top: 14px;
+  color: var(--dim);
+  font-size: 14.5px;
+  text-align: center;
 }
 
 /* ---------- AI Operations page ---------- */
