@@ -1,6 +1,6 @@
 # Juice Tech — Customer Policies
 
-*Pay for the time, share the time.*
+*Pay for the time, share the power.*
 
 These are the documents the AI concierge is grounded in. If the assistant cannot
 find an answer here, it is instructed to say so and hand over to a human rather

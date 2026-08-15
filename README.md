@@ -1,6 +1,6 @@
 # Juice Tech Hub
 
-**Pay for the time, share the time.** A South African shared power bank
+**Pay for the time, share the power.** A South African shared power bank
 network — rentals, event charging and digital advertising.
 
 ---
@@ -92,7 +92,7 @@ Build a modern, mobile-first website and web app for **Juice Tech**, a South Afr
 
 **Business name:** Juice Tech
 
-**Primary tagline:** "Pay for the time, share the time."
+**Primary tagline:** "Pay for the time, share the power."
 
 **Secondary tagline (use in supporting copy/meta descriptions):** "Stay Powered. Stay Limitless."
 
@@ -166,7 +166,7 @@ Create a hero section with:
 
 **Heading:** "Never let a low battery end your experience."
 
-**Subheading:** "Rent a fast-charging Juice Tech power bank, stay connected and keep moving. Pay for the time, share the time."
+**Subheading:** "Rent a fast-charging Juice Tech power bank, stay connected and keep moving. Pay for the time, share the power."
 
 **Primary button:** "Rent Now"
 
@@ -458,7 +458,7 @@ Include this notice: *"Submitting an enquiry does not guarantee franchise approv
 
 Use this text (adapted):
 
-*"Juice Tech was created after experiencing the frustration and risk of having a phone battery die when it was needed most. We believe that access to power helps people remain connected, capture important moments, arrange transport and stay in touch with loved ones. Juice Tech combines portable charging, smart technology and digital advertising to create safer and more convenient experiences — because when you pay for the time, you get to share the time with the people and moments that matter."*
+*"Juice Tech was created after experiencing the frustration and risk of having a phone battery die when it was needed most. We believe that access to power helps people remain connected, capture important moments, arrange transport and stay in touch with loved ones. Juice Tech combines portable charging, smart technology and digital advertising to create safer and more convenient experiences — because when you pay for the time, you get to share the power with the people and moments that matter."*
 
 Include: Mission, Vision, Founder story, Safety impact, Technology, Venue partnerships, South African growth plans.
 

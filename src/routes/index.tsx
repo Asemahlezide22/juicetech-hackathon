@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
         content:
           "Rent a fast-charging power bank from a Juice Tech station. Stay Powered. Stay Limitless. Event charging hire and digital screen advertising across South Africa.",
       },
-      { property: "og:title", content: "Juice Tech | Pay for the time, share the time." },
+      { property: "og:title", content: "Juice Tech | Pay for the time, share the power." },
       {
         property: "og:description",
         content:
@@ -65,7 +65,7 @@ function Home() {
             </h1>
             <p className="mt-6 max-w-xl text-lg text-ink-muted sm:text-xl">
               Rent a fast-charging Juice Tech power bank, stay connected and keep moving. Pay for the
-              time, share the time.
+              time, share the power.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="h-13 px-7 text-base font-bold">

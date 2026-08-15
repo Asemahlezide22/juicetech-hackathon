@@ -40,7 +40,7 @@ function dot(slide, x, y, size = 0.3) {
     x: 0.9, y: 2.4, w: 10, h: 1.1,
     fontFace: H, fontSize: 60, bold: true, color: Y, charSpacing: 2, margin: 0,
   });
-  s.addText("Pay for the time, share the time.", {
+  s.addText("Pay for the time, share the power.", {
     x: 0.95, y: 3.5, w: 10, h: 0.6,
     fontFace: B, fontSize: 24, color: DIM, margin: 0,
   });
@@ -316,7 +316,7 @@ function dot(slide, x, y, size = 0.3) {
   });
 
   card(s, 0.9, 5.3, 11.5, 1.3, PANEL_2);
-  s.addText("Pay for the time, share the time.", {
+  s.addText("Pay for the time, share the power.", {
     x: 1.3, y: 5.65, w: 7, h: 0.6,
     fontFace: H, fontSize: 26, bold: true, color: Y, margin: 0,
   });

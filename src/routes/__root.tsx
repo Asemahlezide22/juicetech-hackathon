@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "description",
         content:
           "Juice Tech power bank rentals and event charging in Cape Town. " +
-          "Pay for the time, share the time.",
+          "Pay for the time, share the power.",
       },
       { name: "author", content: "Juice Tech" },
       { property: "og:title", content: "Juice Tech" },

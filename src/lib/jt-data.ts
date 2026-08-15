@@ -1,6 +1,6 @@
 export const BRAND = {
   name: "Juice Tech",
-  tagline: "Pay for the time, share the time.",
+  tagline: "Pay for the time, share the power.",
   taglineAlt: "Stay Powered. Stay Limitless.",
   email: "info@juicetech.co.za",
   phone: "073 407 2268",

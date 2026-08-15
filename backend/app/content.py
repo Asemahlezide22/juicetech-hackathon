@@ -7,7 +7,7 @@ this file is only the words around them.
 
 BRAND = {
     "name": "Juice Tech",
-    "tagline": "Pay for the time, share the time.",
+    "tagline": "Pay for the time, share the power.",
     "tagline_alt": "Stay Powered. Stay Limitless.",
     "email": "info@juicetech.co.za",
     "phone": "073 407 2268",
