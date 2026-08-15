@@ -786,14 +786,17 @@ img { max-width: 100%; display: block; }
   margin-top: 20px;
 }
 
-/* Anchored to the lower-left so it reads as attached to the station without
-   covering it. Sits mostly in the gutter beside the photo. */
+/* Anchored to the lower-right of the photo. Kept inside the column edge so it
+   cannot be clipped by the body's overflow-x: clip. */
 @media (min-width: 900px) {
   .hero-art .live-card {
     position: absolute;
-    left: -60px;
-    bottom: 6%;
-    width: min(300px, 62%);
+    right: -28px;
+    bottom: 5%;
+    /* Narrower on the right than it was on the left: anchored here it sits
+       over the cabinet itself, so every extra pixel of width hides the thing
+       the photograph is of. */
+    width: min(268px, 52%);
     margin-top: 0;
     padding: 18px;
     background: rgba(14, 14, 18, .88);
