@@ -887,6 +887,12 @@ img { max-width: 100%; display: block; }
 .chat-fab.is-open .chat-fab-open { display: none; }
 .chat-fab.is-open .chat-fab-close { display: block; }
 
+/* The `display: flex` below would otherwise beat the browser's
+   [hidden] { display: none }, leaving the panel open on every page load
+   despite carrying the attribute. Class + attribute outranks class alone,
+   so this wins wherever it sits in the file. */
+.chat-panel[hidden] { display: none; }
+
 .chat-panel {
   position: fixed;
   right: 22px;
