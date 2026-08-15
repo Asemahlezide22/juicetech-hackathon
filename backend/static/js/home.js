@@ -61,18 +61,42 @@
     els.foot.textContent = "Live from the station network";
   }
 
+  var POLL_MS = 10000;      // normal cadence
+  var RETRY_MS = 2500;      // after a miss, come back sooner
+  var FORGIVE = 2;          // consecutive misses before we admit anything
+
+  var misses = 0;
+  var timer = null;
+
+  function schedule(delay) {
+    clearTimeout(timer);
+    timer = setTimeout(refresh, delay);
+  }
+
   function refresh() {
     fetch("/api/stations/" + encodeURIComponent(stationId))
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
         return response.json();
       })
-      .then(paint)
+      .then(function (station) {
+        misses = 0;
+        paint(station);
+        schedule(POLL_MS);
+      })
       .catch(function () {
-        els.foot.textContent = "Live data unavailable";
+        misses += 1;
+
+        // One dropped poll is a blip — a restarted server, a moment of wifi.
+        // Saying "unavailable" for ten seconds because of it is the last thing
+        // we want on screen mid-demo, so hold the last known numbers and try
+        // again sooner. Only admit a problem once it is clearly persistent.
+        if (misses >= FORGIVE) {
+          els.foot.textContent = "Reconnecting to the station network…";
+        }
+        schedule(RETRY_MS);
       });
   }
 
   refresh();
-  setInterval(refresh, 10000);
 })();
