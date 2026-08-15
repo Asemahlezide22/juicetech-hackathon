@@ -37,3 +37,7 @@ dist-ssr
 # Python bytecode (the backend has its own .gitignore too)
 __pycache__/
 *.py[cod]
+
+# The pitch deck. Built by tools-build-deck.js — regenerate it rather than
+# committing a binary that cannot be diffed or merged.
+*.pptx
