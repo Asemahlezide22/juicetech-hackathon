@@ -724,6 +724,83 @@ img { max-width: 100%; display: block; }
 
 .section.dark .tick-grid li::before { left: 16px; top: 1.3em; }
 
+/* ---------- AI Operations page ---------- */
+
+.ai-controls {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: end;
+  margin-top: 8px;
+}
+
+.ai-controls .btn { min-height: 50px; }
+
+.ai-h3 { margin: 34px 0 14px; font-size: 20px; font-weight: 800; letter-spacing: -.015em; }
+
+.chart-wrap { overflow-x: auto; margin-bottom: 26px; }
+.chart { width: 100%; min-width: 620px; height: auto; }
+.chart .bar { fill: var(--yellow); transition: fill .15s ease; }
+.chart .bar:hover { fill: var(--yellow-deep); }
+.chart .chart-axis { stroke: var(--grey-200); stroke-width: 1; }
+.chart .chart-label { fill: var(--grey-500); font-size: 11px; font-family: var(--font); }
+
+.table-wrap { overflow-x: auto; margin-bottom: 18px; }
+.table-wrap .table { min-width: 520px; }
+
+.section.dark .table {
+  background: rgba(255, 255, 255, .04);
+  border-color: rgba(255, 255, 255, .12);
+  color: var(--white);
+}
+
+.section.dark .table th, .section.dark .table td { border-bottom-color: rgba(255, 255, 255, .1); }
+.section.dark .table tbody tr:hover { background: rgba(255, 212, 0, .09); }
+.section.dark .table thead th { background: rgba(0, 0, 0, .5); }
+
+/* --- Ask Juice --- */
+
+.ai-chat { display: grid; gap: 14px; grid-template-columns: 1fr; margin: 20px 0 0; }
+
+@media (min-width: 640px) {
+  .ai-chat { grid-template-columns: 2fr 1fr auto; align-items: end; }
+  .ai-chat .btn { min-height: 50px; }
+}
+
+.ai-answer {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--grey-200);
+  border-left: 4px solid var(--yellow);
+  border-radius: var(--radius);
+  background: var(--grey-50);
+}
+
+.ai-reply { margin: 0; font-size: 17px; white-space: pre-wrap; }
+
+/* What was stripped before anything left the machine. */
+.ai-redacted {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: rgba(34, 197, 94, .12);
+  color: #15803d;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ai-source {
+  margin: 0 0 10px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--grey-500);
+  font-size: 13.5px;
+}
+
+#ai-sources-wrap { margin-top: 14px; }
+#ai-sources { padding: 0 20px 16px; }
+
 /* ---------- FAQ ---------- */
 
 .faq {

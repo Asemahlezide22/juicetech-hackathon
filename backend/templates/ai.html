@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% from "_icons.html" import bolt, battery, shield %}
+
+{% block title %}AI Operations | Juice Tech{% endblock %}
+{% block description %}Demand forecasting, battery health prediction and van rebalancing for the Juice Tech network.{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">{{ bolt() }} AI Operations</p>
+  <h1>The models that keep <span class="accent">cabinets full.</span></h1>
+  <p class="lede">
+    {{ stations_count }} stations, {{ banks_count }} power banks. Demand is
+    forecast a day ahead, failing batteries are pulled before they fail, and
+    the van is loaded from the gap between the two.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <strong>{{ model.mae }}</strong><span>Demand error (banks/hour)</span>
+    </div>
+    <div class="stat">
+      <strong>{{ model.lift_pct }}%</strong><span>Better than baseline</span>
+    </div>
+    <div class="stat">
+      <strong>{{ health.auc }}</strong><span>Battery health AUC</span>
+    </div>
+    <div class="stat">
+      <strong>{{ "{:,}".format(model.rows_trained) }}</strong><span>Rows trained on</span>
+    </div>
+  </div>
+</section>
+
+<!-- Scenario controls: the two things an operator genuinely knows a day ahead. -->
+<section class="section alt reveal">
+  <div class="wrap">
+    <p class="kicker">Scenario</p>
+    <h2>What if the lights go out?</h2>
+    <p class="body-text">
+      Eskom publishes the schedule and the weather service publishes the front,
+      so both are inputs to the model rather than things it has to guess.
+    </p>
+
+    <form class="ai-controls" method="get" action="/ai">
+      <div class="field">
+        <label for="stage">Load shedding stage</label>
+        <select id="stage" name="stage">
+          {% for s in range(0, 7) %}
+            <option value="{{ s }}" {% if s == stage %}selected{% endif %}>
+              {% if s == 0 %}No load shedding{% else %}Stage {{ s }}{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="rain">Weather</label>
+        <select id="rain" name="rain">
+          <option value="0" {% if not rain %}selected{% endif %}>Clear</option>
+          <option value="1" {% if rain %}selected{% endif %}>Rain forecast</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Re-run forecast</button>
+    </form>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <p class="kicker">Next 24 hours</p>
+    <h2>Network demand, hour by hour</h2>
+
+    <!-- Hand-drawn SVG. No chart library, no CDN: this renders with no network. -->
+    <div class="chart-wrap">
+      <svg class="chart" viewBox="0 0 720 220" role="img"
+           aria-label="Forecast rentals per hour across the network">
+        {% for t in totals %}
+          {% set h = (t.value / peak * 165) | round(1) %}
+          <rect class="bar" x="{{ loop.index0 * 30 + 6 }}" y="{{ 180 - h }}"
+                width="20" height="{{ h }}" rx="3">
+            <title>{{ t.hour }} — {{ t.value }} rentals</title>
+          </rect>
+          {% if loop.index0 % 3 == 0 %}
+            <text class="chart-label" x="{{ loop.index0 * 30 + 16 }}" y="200"
+                  text-anchor="middle">{{ t.hour }}</text>
+          {% endif %}
+        {% endfor %}
+        <line class="chart-axis" x1="0" y1="180" x2="720" y2="180" />
+      </svg>
+    </div>
+
+    <h3 class="ai-h3">Busiest stations over the next day</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th scope="col">Station</th><th scope="col">Forecast rentals</th></tr></thead>
+        <tbody>
+          {% for name, value in busiest %}
+            <tr><th scope="row">{{ name }}</th><td>{{ value }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted-text">
+      Model: gradient boosting on {{ "{:,}".format(model.rows_trained) }} rows of
+      hourly telemetry. Mean absolute error {{ model.mae }} rentals per station-hour,
+      against a {{ model.baseline_mae }} baseline of "same station, same hour, last
+      week" — {{ model.lift_pct }}% better than the honest yardstick.
+    </p>
+  </div>
+</section>
+
+<section class="section alt reveal">
+  <div class="wrap">
+    <p class="kicker">Tonight's van run</p>
+    <h2>Move {{ rebalance.banks_moved }} banks, unlock R{{ "{:,.0f}".format(rebalance.revenue_unlocked) }}</h2>
+
+    {% if rebalance.moves %}
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">From</th><th scope="col">To</th>
+              <th scope="col">Banks</th><th scope="col">Closes gap</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in rebalance.moves %}
+              <tr>
+                <th scope="row">{{ m['from'] }}</th>
+                <td>{{ m['to'] }}</td>
+                <td>{{ m.banks }}</td>
+                <td>{{ m.closes_gap }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="body-text">No moves needed — every station is stocked for the forecast.</p>
+    {% endif %}
+
+    {% if rebalance.expansion %}
+      <h3 class="ai-h3">Where the next cabinet goes</h3>
+      <p class="body-text">
+        These sites stay short even after the van has run. That is not a routing
+        failure, it is a capacity signal — the same model saying where to spend
+        the next cabinet.
+      </p>
+      <ul class="ticks">
+        {% for e in rebalance.expansion %}
+          <li><strong>{{ e.station }}</strong> — {{ e.short }} banks short</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section dark reveal">
+  <div class="wrap">
+    <p class="kicker">Battery health</p>
+    <h2>Pulling cells before they fail</h2>
+    <p class="body-text light">
+      A lithium cell that swells or whose internal resistance runs away is a
+      safety problem, not a maintenance one. {{ health.scored }} banks scored;
+      <strong>{{ health.pull_now }}</strong> flagged to pull now,
+      {{ health.watch }} to watch.
+    </p>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Bank</th><th scope="col">Station</th>
+            <th scope="col">Cycles</th><th scope="col">Capacity</th>
+            <th scope="col">Resistance</th><th scope="col">Risk</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in health.units %}
+            <tr>
+              <th scope="row">{{ u.bank_id }}</th>
+              <td>{{ u.station }}</td>
+              <td>{{ u.cycles }}</td>
+              <td>{{ u.capacity_pct }}%</td>
+              <td>{{ u.resistance_mohm }} mΩ</td>
+              <td>{{ u.risk }}</td>
+              <td>{{ u.action }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted-text">
+      Gradient boosting classifier, AUC {{ health.auc }}. Strongest signal:
+      {{ health.signals[0].signal if health.signals else "internal resistance" }}.
+      Pulled cells are refurbished where possible, not landfilled.
+    </p>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">{{ shield() }} Ask Juice</p>
+    <h2>The customer assistant</h2>
+    <p class="body-text">
+      Grounded in our own published policy documents, so it cannot invent a
+      refund rule we never agreed to. Every message is <strong>redacted before
+      it leaves this machine</strong> — try typing an ID or card number and see
+      what actually gets sent.
+    </p>
+
+    <form class="ai-chat" id="ai-chat">
+      <div class="field">
+        <label for="q">Your question</label>
+        <input id="q" name="q" type="text" required
+               placeholder="How much does it cost, and is my phone safe?">
+      </div>
+      <div class="field">
+        <label for="lang">Language</label>
+        <select id="lang" name="lang">
+          {% for l in ["English", "isiXhosa", "Afrikaans", "isiZulu", "Sesotho"] %}
+            <option value="{{ l }}">{{ l }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Ask</button>
+    </form>
+
+    <div id="ai-answer" class="ai-answer" hidden>
+      <p class="ai-reply" id="ai-reply"></p>
+      <p class="ai-redacted" id="ai-redacted" hidden></p>
+      <details class="faq" id="ai-sources-wrap" hidden>
+        <summary>Policy passages this answer used</summary>
+        <div id="ai-sources"></div>
+      </details>
+    </div>
+
+    <p class="muted-text">Language model: {{ llm_status }}</p>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ai.js"></script>
+{% endblock %}

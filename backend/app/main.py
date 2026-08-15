@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 
 from . import config
 from .database import create_db_and_tables, migrate
-from .routers import enquiries, kiosk, otp, pages, pricing, rentals, stations
+from .routers import ai, enquiries, kiosk, otp, pages, pricing, rentals, stations
 from .seed import seed_if_empty
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +53,7 @@ app.include_router(stations.router)
 app.include_router(otp.router)
 app.include_router(rentals.router)
 app.include_router(enquiries.router)
+app.include_router(ai.router)     # forecasting, battery health, concierge
 app.include_router(kiosk.router)  # the hackathon kiosk demo
 app.include_router(pages.router)  # HTML pages last, so /api/* wins any overlap
 
