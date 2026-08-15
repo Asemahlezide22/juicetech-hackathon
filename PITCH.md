@@ -42,10 +42,36 @@ Then the differentiator, in one line:
 
 ### 4. Demo (90 sec) — see the script below
 
-### 5. Impact + Ask (45 sec)
-- Serves the sites incumbents refuse to: taxi ranks, townships, campuses.
-- POPIA-native: no ID document, no stored card, redaction at the edge.
-- Ask: what you would do with the prize.
+### 5. Impact + Ask (45 sec) — say this section slowly
+
+**It is August. This is GirlCode.** Do not skip past that.
+
+> "A phone dying at five in the afternoon is not an inconvenience. It is no
+> Bolt, no taxi fare, no shared location, no call to someone who will come
+> and fetch you. In this country that is not the same risk for everybody.
+>
+> Our model's busiest hour across the taxi ranks and campuses is **17:00** —
+> exactly when people are trying to get home. So an empty cabinet at Langa
+> Taxi Rank at five o'clock is not a stock problem. It is a safety problem.
+>
+> That is what the forecasting is *for*. It is 21.6% better than guessing
+> from last week, and every point of that accuracy is a cabinet that still
+> has a bank in it at the hour somebody needs to call a ride.
+>
+> Around that we built: no ID document, so a rental leaves no trail anyone
+> could follow. Cabinets only where there is light and people. Charge held
+> back so you can always call. And we track batteries, never the person
+> carrying one.
+>
+> None of this solves gender based violence. We are not going to stand here
+> and claim that. It is infrastructure built by people who know that a dead
+> battery at the wrong moment, on the wrong walk home, is not a small thing."
+
+Then the ask: what you would do with the prize.
+
+**Why this lands:** every number in it is checkable, and naming the limit
+yourself is what separates this from a team stapling a cause onto a product.
+Judges have heard the second kind all day.
 
 ---
 
@@ -86,7 +112,13 @@ Never start a demo by starting a server.
 | Training time | **~7 seconds**, on a laptop, offline |
 | Battery health AUC | **0.863** across **632** banks |
 | Stations modelled | **18** across Cape Town |
-| Automated checks passing | **208** |
+| Busiest hour, taxi ranks + campuses | **17:00** — the journey home |
+| Forecast rentals in that hour | **82.7** across those 7 sites |
+| Automated checks passing | **212** |
+
+Sites in that group, by name: CT Station Taxi Deck, Bellville Taxi Rank,
+Langa Taxi Rank, Mitchells Plain Terminus, UCT Upper Campus, CPUT District
+Six, Stellenbosch Neelsie.
 
 ---
 
@@ -121,6 +153,15 @@ site still renders. That was a decision, not a limitation.
 One model across every station with station type as a feature — so a brand new
 cabinet forecasts on day one instead of after two months of its own history.
 That is the difference between expanding into Delft and not bothering.
+
+**"Isn't the safety angle a stretch for a power bank company?"**
+The honest answer, and do not get defensive: we are not claiming to prevent
+assault. We are saying a phone is how you call a ride, share a location, or
+reach someone — and it dies at the worst possible time. The model's peak hour
+across taxi ranks and campuses is 17:00. We built the forecasting so a cabinet
+is stocked at that hour, and the privacy design so renting leaves no trail. If
+that reads as a stretch, look at what we removed: no ID, no card stored, no
+tracking of the person. Those cost us conversion. We did them anyway.
 
 ---
 
