@@ -33,3 +33,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python bytecode (the backend has its own .gitignore too)
+__pycache__/
+*.py[cod]

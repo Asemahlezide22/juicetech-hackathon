@@ -6,7 +6,7 @@ This is the only file you need to run. Python serves the whole site:
     API docs     http://localhost:8000/docs
 
 In PyCharm: pick "Juice Tech" from the run dropdown and press the green arrow.
-From a terminal:  python main.py
+From a terminal:  python main.py     (python3 main.py on Ubuntu and macOS)
 
 The original React/TypeScript site still exists in src/ but is no longer
 needed — the site is now plain HTML, CSS and JavaScript served by Python.
@@ -17,11 +17,24 @@ To run it anyway (it needs Bun installed):
 Press Ctrl+C once to stop everything.
 """
 
+# Keeps the "Path | None" annotations below parseable on Python 3.7-3.9, so
+# this file reaches the version check instead of dying with a SyntaxError.
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
 import time
 from pathlib import Path
+
+if sys.version_info < (3, 10):
+    sys.exit(
+        f"Juice Tech needs Python 3.10 or newer. This is {sys.version.split()[0]}.\n\n"
+        "  Ubuntu:  sudo apt install python3.12 python3.12-venv\n"
+        "           then start it with:  python3.12 main.py\n"
+        "  macOS:   brew install python@3.12\n"
+        "  Windows: https://www.python.org/downloads/"
+    )
 
 ROOT = Path(__file__).resolve().parent
 BACKEND = ROOT / "backend"
@@ -61,9 +74,23 @@ def find_backend_python() -> Path:
         text=True,
     )
     if result.returncode != 0:
+        stderr = result.stderr.strip()
+
+        # Debian and Ubuntu ship venv separately from Python itself, so
+        # `python3 -m venv` fails out of the box with an ensurepip error.
+        # That message does not say "install a package", so spell it out.
+        if "ensurepip" in stderr or "python3-venv" in stderr:
+            version = f"{sys.version_info.major}.{sys.version_info.minor}"
+            sys.exit(
+                "Could not create backend/.venv — the venv module is not installed.\n\n"
+                f"{stderr}\n\n"
+                "On Ubuntu or Debian, install it and run this again:\n"
+                f"    sudo apt install python{version}-venv\n"
+            )
+
         sys.exit(
             "Could not create backend/.venv.\n"
-            f"{result.stderr.strip()}\n\n"
+            f"{stderr}\n\n"
             "Check that Python 3.10+ is installed and on your PATH."
         )
 

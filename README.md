@@ -10,12 +10,20 @@ network — rentals, event charging and digital advertising.
 You need **Python 3.10 or newer**. Nothing else — no Node, no npm, no build step.
 
 ```bash
-git clone https://github.com/Cekiso/charge-and-go-share.git
-cd charge-and-go-share
+git clone https://github.com/Asemahlezide22/juicetech-hackathon.git
+cd juicetech-hackathon
 python main.py
 ```
 
-On Windows use `py main.py` if `python` is not on your PATH.
+**Ubuntu and macOS: the command is `python3 main.py`.** Plain `python` usually
+does not exist there. On Windows, try `py main.py` if `python` is not on PATH.
+
+**Ubuntu only, once:** Debian and Ubuntu ship the venv module separately from
+Python, so install it before the first run or the setup step fails:
+
+```bash
+sudo apt install python3-venv
+```
 
 The first run creates `backend/.venv` and installs dependencies automatically
 (about a minute). Every run after that starts immediately.
@@ -34,7 +42,8 @@ Press `Ctrl+C` to stop.
 With the site running, in a second terminal:
 
 ```bash
-cd backend && ../backend/.venv/Scripts/python.exe test_pages.py
+cd backend
+python test_pages.py
 ```
 
 | Suite | Checks | Needs the server? |
@@ -43,7 +52,8 @@ cd backend && ../backend/.venv/Scripts/python.exe test_pages.py
 | `smoke_test.py` | 45 — the full rental journey | yes |
 | `test_late_fees.py` | 14 — late-fee rules | no |
 
-Each test script re-launches itself under `backend/.venv`, so any Python works.
+Each script re-launches itself under `backend/.venv`, so any Python works —
+`python`, `python3` or `py`, whichever your system has.
 
 ### Opening it in PyCharm
 

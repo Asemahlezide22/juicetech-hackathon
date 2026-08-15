@@ -6,6 +6,9 @@ interpreter in their editor first, each script calls ensure_venv() and
 re-launches itself under the right Python automatically.
 """
 
+# Keeps the "Path | None" return annotation parseable on Python 3.7-3.9.
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
