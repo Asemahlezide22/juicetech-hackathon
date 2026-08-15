@@ -54,6 +54,24 @@ def _policy_index() -> retrieve.Index | None:
     return retrieve.Index(chunks) if chunks else None
 
 
+def policy_index() -> retrieve.Index | None:
+    """The policy index on its own, without training any models.
+
+    The chat widget only needs the documents to ground its answers. Calling
+    warm() for that would generate 60 days of telemetry and fit two gradient
+    boosting models first — several seconds a customer should not wait for
+    before their first reply.
+    """
+    if "policy_index" in _state:
+        return _state["policy_index"]
+
+    with _lock:
+        if "policy_index" not in _state:
+            _state["policy_index"] = _policy_index()
+
+    return _state["policy_index"]
+
+
 # --------------------------------------------------------------------- stations
 
 def stations() -> list[dict]:
@@ -196,7 +214,9 @@ def chat(message: str, language: str = "English") -> dict:
     ends a company -- so anything that even resembles one is destroyed here.
     """
     cleaned, stripped = agent.redact(message)
-    reply, passages = agent.concierge(cleaned, language, warm()["policy_index"])
+    # policy_index() rather than warm(): the concierge needs the documents,
+    # not the forecasting and battery models.
+    reply, passages = agent.concierge(cleaned, language, policy_index())
     return {
         "reply": reply,
         "redacted": stripped,
