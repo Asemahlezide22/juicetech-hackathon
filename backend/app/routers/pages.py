@@ -100,6 +100,11 @@ def event_hire(request: Request):
     )
 
 
+@router.get("/safety", include_in_schema=False)
+def safety(request: Request):
+    return render(request, "safety.html", safety=content.SAFETY)
+
+
 @router.get("/about", include_in_schema=False)
 def about(request: Request):
     return render(request, "about.html", about=content.ABOUT, trust=content.TRUST_POINTS)

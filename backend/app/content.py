@@ -26,6 +26,7 @@ NAV = [
     {"label": "Return", "url": "/return"},
     {"label": "Services", "url": "/services"},
     {"label": "Event Hire", "url": "/event-hire"},
+    {"label": "Safety", "url": "/safety"},
     {"label": "About Us", "url": "/about"},
     {"label": "Contact Us", "url": "/contact"},
 ]
@@ -51,8 +52,8 @@ RENT_STEPS_DETAIL = [
 ]
 
 WHY_IT_MATTERS = [
-    {"title": "No taxi fare", "body": "No transport, no tickets, no way to pay."},
-    {"title": "No help", "body": "A flat phone cannot call anyone."},
+    {"title": "No way home", "body": "No taxi fare, no ride, no ticket."},
+    {"title": "No way to call", "body": "No help, no location shared, no emergency number."},
     {"title": "No memories", "body": "The photos stop when the battery does."},
 ]
 
@@ -135,6 +136,46 @@ ABOUT = {
             "body": "Power-only cables. The data pins are physically absent.",
         },
     ],
+}
+
+# Personal safety. Every line here describes a decision already made in the
+# product and written into app/policies/juice_tech_policies.md — nothing is
+# aspirational. Deliberately understated: a power bank does not solve gender
+# based violence, and claiming otherwise would be both false and crass. What
+# it does is keep a phone alive, and a live phone is a way home.
+SAFETY = {
+    "intro": "A flat phone is not an inconvenience. It is no ride home, no "
+             "shared location, no call to someone who will come and fetch you.",
+    "points": [
+        {
+            "title": "Charge held back for the trip home",
+            "body": "Get Home mode will not let your remaining charge fall below "
+                    "what it takes to call a ride or a family member, and it "
+                    "points you at the station on your route rather than the "
+                    "nearest one overall.",
+        },
+        {
+            "title": "Cabinets go where people are, and where there is light",
+            "body": "Lit, staffed, overlooked locations only. Site selection is "
+                    "reviewed with the host. A cabinet in a dark corner is a "
+                    "mugging waiting to happen, and we will not install one.",
+        },
+        {
+            "title": "No paper trail",
+            "body": "No ID document. No credit check. A cellphone number verified "
+                    "by OTP is all we ask for, so renting leaves nothing behind "
+                    "that could be used to find you.",
+        },
+        {
+            "title": "We track batteries, not people",
+            "body": "The power bank is our property, so we know where it is. We "
+                    "do not follow the person carrying it. Location is requested "
+                    "only while the app is open, only to list nearby cabinets.",
+        },
+    ],
+    "closing": "None of this solves gender based violence. It is infrastructure "
+               "built by people who know that a dead battery at the wrong moment "
+               "is a safety problem, not a small annoyance.",
 }
 
 TRUST_POINTS = [

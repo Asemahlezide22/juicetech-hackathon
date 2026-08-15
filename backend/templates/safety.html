@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "_icons.html" import shield, pin, battery, bolt %}
+
+{% block title %}Safety | Juice Tech{% endblock %}
+{% block description %}A charged phone is a way home. How Juice Tech is designed around personal safety in South Africa.{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">{{ shield() }} Safety</p>
+  <h1>A charged phone is <span class="accent">a way home.</span></h1>
+  <p class="lede">{{ safety.intro }}</p>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <div class="cards cards-2">
+      {% for point in safety.points %}
+        <article class="card">
+          <span class="icon-chip">
+            {% if loop.index == 1 %}{{ battery() }}
+            {% elif loop.index == 2 %}{{ pin("") }}
+            {% else %}{{ shield() }}{% endif %}
+          </span>
+          <h3>{{ point.title }}</h3>
+          <p>{{ point.body }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt reveal">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">{{ bolt() }} Your phone, too</p>
+    <h2>Our cables cannot carry data.</h2>
+    <p class="body-text">
+      A USB connector has four pins: two for power, two for data. In every Juice
+      Tech cable the two data pins are <strong>physically absent</strong> — not
+      switched off, not blocked in software, simply not there. Nothing can move
+      between the cabinet and your phone.
+    </p>
+    <p class="muted-text">
+      Every cable is tethered into the bank, so nobody can swap it for a
+      tampered one.
+    </p>
+  </div>
+</section>
+
+<section class="section dark reveal">
+  <div class="wrap wrap-narrow center">
+    <p class="body-text light">{{ safety.closing }}</p>
+    <p>
+      <a class="btn btn-primary btn-lg" href="/return">{{ pin() }} Find your nearest station</a>
+    </p>
+  </div>
+</section>
+
+{% endblock %}
