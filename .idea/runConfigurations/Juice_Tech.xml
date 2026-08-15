@@ -1,14 +1,17 @@
 ﻿<component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Juice Tech" type="PythonConfigurationType" factoryName="Python">
+    <module name="juicetech-hackathon" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <!-- Deliberately uses the project interpreter, not backend/.venv.
-         main.py finds backend/.venv on its own, so this runs with any Python
-         and needs no interpreter setup in PyCharm. -->
+    <!-- Uses the module's interpreter rather than a pinned path, so this file
+         works on anyone's machine. The <module> element above is required for
+         that: without it PyCharm has nothing to resolve and the dialog shows
+         "<No interpreter>". main.py locates backend/.venv itself, so the
+         project interpreter only has to be some Python, not the virtualenv. -->
     <option name="IS_MODULE_SDK" value="true" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
