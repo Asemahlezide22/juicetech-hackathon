@@ -25,6 +25,24 @@
         /* Private browsing can refuse localStorage. The CSS still follows
            the device setting, so there is nothing to recover from. */
       }
+
+      /* Arm the scroll-reveal effect. Sections are visible in CSS until this
+         runs, so a failed script leaves a readable page rather than blank
+         space. Armed here rather than in site.js so nothing flashes into
+         view and back out.
+
+         The timer is the second half of it: if site.js never arrives, or
+         its observer never fires, the effect disarms after 2.5 seconds and
+         everything is simply shown. site.js cancels this the moment a
+         reveal actually happens. */
+      var root = document.documentElement;
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          && "IntersectionObserver" in window) {
+        root.classList.add("reveal-armed");
+        window.__jtDisarm = setTimeout(function () {
+          root.classList.remove("reveal-armed");
+        }, 2500);
+      }
     })();
   </script>
 </head>

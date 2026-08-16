@@ -4,24 +4,35 @@
   "use strict";
 
   /* Fade sections in as they scroll into view.
-     Anything marked .reveal starts hidden in CSS, so if this script fails to
-     run we must still show it — hence the immediate fallback below. */
+
+     Sections are visible unless the inline script in <head> armed the
+     effect, so there is nothing to rescue when this file fails to load.
+     What this does add is cancelling that script's 2.5s failsafe — but only
+     once a reveal has actually happened, which is the only proof that the
+     observer is really firing. */
   var revealables = document.querySelectorAll(".reveal");
+  if (!revealables.length) return;
 
   if (!("IntersectionObserver" in window)) {
-    revealables.forEach(function (el) { el.classList.add("in"); });
-  } else {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          observer.unobserve(entry.target);   // reveal once, not on every scroll
-        }
-      });
-    }, { rootMargin: "0px 0px -80px 0px", threshold: 0.08 });
-
-    revealables.forEach(function (el) { observer.observe(el); });
+    document.documentElement.classList.remove("reveal-armed");
+    return;
   }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+
+      if (window.__jtDisarm) {
+        clearTimeout(window.__jtDisarm);
+        window.__jtDisarm = null;
+      }
+
+      entry.target.classList.add("in");
+      observer.unobserve(entry.target);   // reveal once, not on every scroll
+    });
+  }, { rootMargin: "0px 0px -80px 0px", threshold: 0.08 });
+
+  revealables.forEach(function (el) { observer.observe(el); });
 })();
 
 

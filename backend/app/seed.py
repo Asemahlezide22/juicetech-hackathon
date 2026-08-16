@@ -83,6 +83,49 @@ def seed_if_empty() -> None:
         db.commit()
 
 
+def restock() -> dict[str, int]:
+    """Put every power bank back where it started.
+
+    A bank returned to a different station stays there, which is correct —
+    that is how the real network would work. Over a few dozen test rentals
+    it also means one station quietly empties: JT-CPT-001, the one on the
+    homepage card, drifted to zero banks while JT-CPT-003 collected them.
+    The card then advertises a station with nothing in it.
+
+    Rather than delete and recreate the rows, which would orphan any rental
+    pointing at them, this moves the existing banks back and marks them
+    available. Returns the resulting count per station.
+    """
+    with DBSession(engine) as db:
+        banks = sorted(db.exec(select(PowerBank)).all(), key=lambda b: b.id)
+
+        i = 0
+        for station_id, count in STOCK.items():
+            for _ in range(count):
+                if i >= len(banks):
+                    break
+                banks[i].station_id = station_id
+                banks[i].status = "available"
+                db.add(banks[i])
+                i += 1
+
+        # Any bank beyond the seeded totals — added by hand, or left over
+        # from an older seed — goes to the largest station rather than
+        # being dropped.
+        busiest = max(STOCK, key=STOCK.get)
+        for bank in banks[i:]:
+            bank.station_id = busiest
+            bank.status = "available"
+            db.add(bank)
+
+        db.commit()
+
+        result: dict[str, int] = {}
+        for bank in db.exec(select(PowerBank)).all():
+            result[bank.station_id] = result.get(bank.station_id, 0) + 1
+        return result
+
+
 def _backfill_locations(db: DBSession) -> None:
     """Fill in coordinates on stations that were seeded before they existed."""
     changed = False

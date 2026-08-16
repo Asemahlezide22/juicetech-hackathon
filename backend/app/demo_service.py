@@ -46,8 +46,21 @@ def seed(db: DBSession, force: bool = False) -> None:
 
 
 def reset(db: DBSession) -> None:
-    """Wipe every demo rental and put all banks back. For the presenter."""
+    """Wipe every demo rental and put all banks back. For the presenter.
+
+    Covers both halves of the site. The kiosk demo is reseeded, and the
+    station network behind the homepage card and the "nearest station"
+    lookup is restocked — those are separate tables, and resetting only the
+    first left the homepage advertising a station with no banks in it after
+    a run of test rentals.
+    """
     seed(db, force=True)
+
+    # Imported here rather than at module scope: app.seed opens its own
+    # session, and importing it at the top creates a cycle through database.
+    from .seed import restock
+
+    restock()
 
 
 def next_reference(db: DBSession) -> str:

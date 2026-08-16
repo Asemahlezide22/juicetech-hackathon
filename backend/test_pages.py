@@ -143,6 +143,23 @@ check("QR plate stays white in dark mode",
       "var(--white)" in qr_rule and "var(--surface)" not in qr_rule,
       qr_rule.strip().replace("\n", " ")[:60])
 
+# --- Content must not depend on JavaScript ---------------------------------
+# The reveal effect used to hide five homepage sections in CSS and rely on a
+# script to show them. A visitor whose script failed got blank space.
+
+status, js = fetch("/static/js/site.js")
+
+check("reveal sections are visible by default",
+      ".reveal {" in css and "opacity: 0" not in css.split(".reveal {")[1].split("}")[0])
+check("hidden only once JS arms it", ":root.reveal-armed .reveal {" in css)
+check("arming happens before paint", "reveal-armed" in head)
+# If the script never arrives, or its observer never fires, the effect must
+# give up and show everything rather than leaving the page blank.
+check("arming has a failsafe", "__jtDisarm" in head and "2500" in head)
+check("failsafe cancelled only on a real reveal", "__jtDisarm" in js)
+check("reduced motion still shows everything",
+      ".reveal { opacity: 1" in css or ".reveal { opacity: 1;" in css)
+
 # --- Responsive navigation -------------------------------------------------
 
 check("menu button exists", 'class="nav-toggle"' in home)
@@ -156,7 +173,6 @@ check("phone breakpoint defined", "max-width: 860px" in css)
 check("menu button hidden by default", ".nav-toggle {" in css and "display: none" in css)
 check("nav stacks on phones", "flex-direction: column" in css)
 
-status, js = fetch("/static/js/site.js")
 check("menu script present", "nav-toggle" in js)
 check("Escape closes the menu", 'key === "Escape"' in js)
 # The matchMedia change event did not fire under test; resize is the fallback

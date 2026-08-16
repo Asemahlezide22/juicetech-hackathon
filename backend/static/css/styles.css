@@ -192,14 +192,25 @@ img { max-width: 100%; display: block; }
   100% { background-position: 220% 0; }
 }
 
-/* Sections fade up as they scroll in. Without JS they simply stay visible. */
+/* Sections fade up as they scroll in.
+
+   Visible by default, hidden only once JavaScript has armed the effect. The
+   comment here used to claim "without JS they simply stay visible" and the
+   rule did the opposite: opacity 0 with a script needed to undo it. A
+   visitor whose JavaScript failed got five permanently blank sections on
+   the homepage, no error, nothing to click. On a site whose whole position
+   is that it works when the venue wifi does not, content must never need a
+   script to become visible. */
 .reveal {
-  opacity: 0;
-  transform: translateY(26px);
   transition: opacity .6s ease, transform .6s ease;
 }
 
-.reveal.in { opacity: 1; transform: none; }
+:root.reveal-armed .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+:root.reveal-armed .reveal.in { opacity: 1; transform: none; }
 
 /* ---------- Accessibility ---------- */
 
