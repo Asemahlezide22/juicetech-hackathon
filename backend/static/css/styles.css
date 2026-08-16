@@ -1094,11 +1094,16 @@ img { max-width: 100%; display: block; }
   text-align: left;
 }
 
-/* White plate behind the code — a QR on a dark background will not scan. */
+/* White plate behind the code — a QR on a dark background will not scan.
+   The SVG now carries its own white background too, so it survives being
+   downloaded or printed; this plate just keeps the quiet zone generous.
+   Size matters as much as contrast: a camera needs roughly 2px per module
+   to lock on, and at 39 modules wide anything under ~200px is a code people
+   have to lean in and fight with. */
 .qr-code {
   flex: 0 0 auto;
-  width: 176px;
-  height: 176px;
+  width: 260px;
+  height: 260px;
   padding: 12px;
   border-radius: 16px;
   background: var(--white);

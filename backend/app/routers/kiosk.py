@@ -15,7 +15,7 @@ import qrcode
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
-from qrcode.image.svg import SvgPathImage
+from qrcode.image.svg import SvgPathFillImage
 from sqlmodel import Session as DBSession
 
 from .. import assets
@@ -263,27 +263,65 @@ def pay_screen(request: Request, reference: str, db: DBSession = Depends(get_ses
     )
 
 
-@router.get("/kiosk/qr.svg", include_in_schema=False)
-def station_qr(request: Request, station: str = cfg.DEFAULT_STATION):
-    """The QR that would be printed on a physical cabinet.
+LOOPBACK_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "[::1]", "::1"}
 
-    Built from request.base_url rather than a hard-coded host, so whatever
-    address the page was loaded from is what the code encodes. Open the site
-    on the machine's network address and the QR points there too — which is
-    what makes it scannable from someone else's phone rather than only from
-    the laptop it was generated on.
+
+def phone_reachable_base(request: Request) -> str:
+    """The base URL to put inside a QR code, as a phone would need it.
+
+    request.base_url is normally right — open the site through a tunnel and
+    the code should point at the tunnel. But when the page is opened on the
+    laptop's own "localhost", base_url says localhost, and a phone reading
+    that looks for the site on *itself* and finds nothing. The code scans
+    perfectly and still goes nowhere, which is a hard failure to diagnose in
+    front of an audience.
+
+    So loopback is swapped for this machine's address on the local network,
+    which a phone on the same wifi can actually reach. Anything else — a
+    tunnel hostname, a LAN address already — is left exactly as it is.
     """
-    st = svc.station(station)
-    url = str(request.base_url).rstrip("/") + f"/kiosk?station={st['id']}"
+    base = str(request.base_url).rstrip("/")
+    if request.url.hostname not in LOOPBACK_HOSTS:
+        return base
 
-    qr = qrcode.QRCode(box_size=10, border=2)
+    import socket
+
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.settimeout(0.4)
+            s.connect(("8.8.8.8", 80))
+            lan = s.getsockname()[0]
+    except OSError:
+        return base  # offline: nothing better to offer than what we were given
+
+    return base.replace(f"//{request.url.hostname}", f"//{lan}", 1)
+
+
+def qr_svg(url: str) -> bytes:
+    """A QR code as SVG, with its white quiet zone baked in.
+
+    SvgPathImage draws black paths on a transparent background, so the code
+    is only readable while whatever sits behind it happens to be pale. Print
+    it, download it, or drop it on this site's dark section and it becomes
+    black-on-black. The Fill variant writes an explicit white rectangle
+    underneath, so the code carries its own contrast wherever it ends up.
+    """
+    qr = qrcode.QRCode(box_size=10, border=3)
     qr.add_data(url)
     qr.make(fit=True)
 
     buffer = io.BytesIO()
-    qr.make_image(image_factory=SvgPathImage).save(buffer)
+    qr.make_image(image_factory=SvgPathFillImage).save(buffer)
+    return buffer.getvalue()
+
+
+@router.get("/kiosk/qr.svg", include_in_schema=False)
+def station_qr(request: Request, station: str = cfg.DEFAULT_STATION):
+    """The QR that would be printed on a physical cabinet."""
+    st = svc.station(station)
+    url = phone_reachable_base(request) + f"/kiosk?station={st['id']}"
     return Response(
-        content=buffer.getvalue(),
+        content=qr_svg(url),
         media_type="image/svg+xml",
         headers={"Cache-Control": "no-store"},   # the host can change between loads
     )
@@ -292,15 +330,12 @@ def station_qr(request: Request, station: str = cfg.DEFAULT_STATION):
 @router.get("/kiosk/{reference}/qr.svg", include_in_schema=False)
 def pay_qr(request: Request, reference: str):
     """QR for Scan to Pay. Points at this same demo, on the phone."""
-    url = str(request.base_url).rstrip("/") + f"/kiosk/{reference}/pay"
-
-    qr = qrcode.QRCode(box_size=10, border=2)
-    qr.add_data(url)
-    qr.make(fit=True)
-
-    buffer = io.BytesIO()
-    qr.make_image(image_factory=SvgPathImage).save(buffer)
-    return Response(content=buffer.getvalue(), media_type="image/svg+xml")
+    url = phone_reachable_base(request) + f"/kiosk/{reference}/pay"
+    return Response(
+        content=qr_svg(url),
+        media_type="image/svg+xml",
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @router.post("/kiosk/{reference}/pay/success", include_in_schema=False)
