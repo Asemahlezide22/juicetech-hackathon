@@ -1,0 +1,29 @@
+# Render deployment.
+#
+# The app is backend/app/main.py, so the module is app.main — not
+# backend.main, which is what the first deploy tried and could not import.
+# --app-dir puts backend/ on the import path without moving anything.
+#
+# --proxy-headers matters more here than it looks. Render terminates TLS at
+# its edge and forwards plain HTTP, so without it every URL the app builds
+# says "http" — including the one baked into the station QR code, which would
+# then point at a scheme this host does not serve. Render's proxy is not
+# 127.0.0.1, so the trusted-IP list has to be opened up for the headers to be
+# honoured at all.
+#
+# Note the database: SQLite on a file, on an instance with an ephemeral disk.
+# It reseeds itself on boot, so the site always comes up with stock, but any
+# rental created through the live site disappears on the next deploy or
+# restart. Fine for a demo. Not a place to keep anything real.
+
+services:
+  - type: web
+    name: juicetech-hackathon
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
