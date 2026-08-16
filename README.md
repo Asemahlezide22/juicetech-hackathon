@@ -37,6 +37,39 @@ Then open:
 
 Press `Ctrl+C` to stop.
 
+### Opening it on a phone
+
+The station QR is meant to be scanned, which only works if a phone can reach
+the machine serving the site. Startup prints the address to use:
+
+```
+On your phone (same wifi):  http://10.40.18.124:8000
+```
+
+Open the site at **that** address rather than `localhost`, then scan the code
+on `/how-it-works`. The QR is generated per request from the address the page
+was loaded at, so a page opened at `localhost` would otherwise produce a code
+pointing at the phone itself. Loopback is swapped for the network address
+automatically, but opening the right address keeps every other link correct too.
+
+Two things commonly block this, neither of them the site's fault:
+
+- **Windows Firewall.** A network classified *Public* drops inbound
+  connections. Allow the port from an Administrator PowerShell, and remove the
+  rule afterwards:
+
+  ```powershell
+  New-NetFirewallRule -DisplayName "Juice Tech demo" -Direction Inbound -Protocol TCP -LocalPort 8000 -Action Allow -Profile Public -RemoteAddress LocalSubnet
+  ```
+
+- **Client isolation.** Guest and venue wifi often stops devices talking to
+  each other at all. Nothing on the laptop can fix that — use a phone hotspot,
+  or put the site behind a tunnel.
+
+The server binds `0.0.0.0` so that any of this can work. That means everyone
+on the network can reach it, which is the point at a demo and not something to
+leave running on a café connection.
+
 ### Running the tests
 
 With the site running, in a second terminal:
@@ -48,9 +81,12 @@ python test_pages.py
 
 | Suite | Checks | Needs the server? |
 |---|---|---|
-| `test_pages.py` | 50 — every page, link and asset loads | yes |
-| `smoke_test.py` | 45 — the full rental journey | yes |
+| `test_pages.py` | 107 — every page, link and asset; colour mode; the menu | yes |
+| `test_kiosk.py` | 111 — the kiosk demo, pricing and payment states | yes |
+| `smoke_test.py` | 45 — the full rental journey end to end | yes |
 | `test_late_fees.py` | 14 — late-fee rules | no |
+
+277 checks in total.
 
 Each script re-launches itself under `backend/.venv`, so any Python works —
 `python`, `python3` or `py`, whichever your system has.
@@ -58,6 +94,30 @@ Each script re-launches itself under `backend/.venv`, so any Python works —
 ### Opening it in PyCharm
 
 Open this folder, then pick **Juice Tech** from the run dropdown and press ▶.
+
+### The site
+
+Eight pages, defined once in `backend/app/content.py` as `NAV`. Every entry
+needs a matching route in `backend/app/routers/pages.py`, and a test fails if
+one is missing.
+
+| | |
+|---|---|
+| `/` | Home |
+| `/rent-a-power-bank` | Rent a Power Bank |
+| `/how-it-works` | How It Works — carries the scannable station QR |
+| `/return` | Return — finds your nearest station |
+| `/event-hire` | Event Hire |
+| `/safety` | Safety — the reason the project exists |
+| `/about` | About Us |
+| `/contact` | Contact Us |
+
+Not in the navigation, but part of the demo:
+
+| | |
+|---|---|
+| `/kiosk?station=JUICE-QR-001` | What a scanned cabinet opens |
+| `/demo-dashboard` | The presenter's view, including **Reset Demo** |
 
 ### What is where
 
@@ -68,6 +128,23 @@ src/          The original React build. No longer used; kept for reference.
 ```
 
 `backend/README.md` documents the API, the business rules and how to add a page.
+
+### Things worth knowing before changing the CSS
+
+- **Colour mode.** Light and dark, switched by the button in the header, and
+  following the device until someone presses it. Every colour that moves is a
+  token at the top of `styles.css`; the fixed brand colours above them do not
+  move. Two rules exist that must not be "tidied up": the QR keeps a literal
+  white plate in both themes, because a code on a dark background will not
+  scan, and gold-as-text uses `--accent-text`, which darkens on a light page
+  because `#ffd400` on white is about 1.5:1.
+- **The navigation** is a row above 860px and a menu behind a button below it.
+  The breakpoint is written in both `styles.css` and `site.js`; if they ever
+  disagree, the nav hides on a screen with no button to bring it back.
+- **Nothing may depend on JavaScript to become visible.** Sections are visible
+  by default and the scroll-reveal effect is armed by a script, not the other
+  way round, so a failed script leaves a readable page. There are tests
+  pinning all of this.
 
 ### The old React site
 
@@ -80,7 +157,24 @@ python main.py --with-react
 
 ---
 
-# Juice Tech — Lovable.ai  Build Prompt
+# Juice Tech — the original build brief
+
+> **This is history, not documentation.** Everything below is the brief the
+> first version of this site was generated from. It is kept because it records
+> where the project started, and because the hackathon rules ask for AI use to
+> be disclosed. It is **not** a description of what exists now — read it as the
+> original ask, and the section above as the current state.
+>
+> Where the built site deliberately differs:
+>
+> | The brief says | What was built | Why |
+> |---|---|---|
+> | R500 refundable deposit | **R300** | Lowered so the demo price is realistic for the market it serves |
+> | Advertising, Franchising, Help Centre and Services pages | Removed | Four pages of text nobody reads in a seven-minute pitch |
+> | An FAQ section | Replaced by the AI chat assistant | Same answers, asked in your own words |
+> | A staff login and password-protected dashboard | Open `/demo-dashboard` | A judge cannot be asked for a password mid-demo |
+> | React, Vite and a component library | Plain HTML, CSS and Python | No build step and no CDN, so the site still renders when the venue wifi fails |
+> | — | A safety page, and a colour mode | Added: the GBV angle is the point of the project, not a feature of the brief |
 
 **How to use this:** Copy everything below the line into a single prompt in Lovable.ai or Bolt.ai. Both tools work best with one long, structured prompt like this rather than several short ones — paste it as your first message to start the build.
 
