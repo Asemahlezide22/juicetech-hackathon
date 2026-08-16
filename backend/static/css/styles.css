@@ -16,6 +16,18 @@
   --dim: #b9b9c4;
   --green: #22c55e;
 
+  /* Semantic tokens — the only colours a theme changes. Everything above is
+     a fixed brand colour and stays put: the hero, header, footer and chat
+     panel are black-and-yellow in both themes, because that is the brand
+     and not a preference. Dark mode turns the pale surfaces between them
+     dark; it does not repaint Juice Tech. */
+  --page: #ffffff;        /* page and light section backgrounds */
+  --page-ink: #16161a;    /* body text */
+  --surface: #ffffff;     /* cards, tables, inputs, secondary buttons */
+  --surface-2: #f6f6f7;   /* alternating sections, quiet panels */
+  --line: #e5e5e9;        /* borders and rules */
+  --muted: #6f6f78;       /* secondary text */
+
   --radius: 16px;
   --radius-lg: 26px;
   --shadow: 0 2px 10px rgba(0, 0, 0, .07);
@@ -23,6 +35,52 @@
   --glow: 0 0 60px rgba(255, 212, 0, .28);
 
   --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Dark theme. Defined three times over on purpose:
+
+   :root[data-theme="dark"]        — the visitor chose dark
+   @media (prefers-color-scheme)   — the visitor chose nothing, and their
+                                     device is dark
+   the :not() guard                — but never when they chose light
+
+   Without the guard, someone on a dark phone who picks light gets the media
+   query overriding their choice and the button appears broken. */
+:root[data-theme="dark"] {
+  --page: #0d0d11;
+  --page-ink: #ececf1;
+  --surface: #17171d;
+  --surface-2: #121217;
+  --line: #2a2a33;
+  --muted: #9d9daa;
+
+  --shadow: 0 2px 10px rgba(0, 0, 0, .5);
+  --shadow-lift: 0 18px 40px -18px rgba(0, 0, 0, .75);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0d0d11;
+    --page-ink: #ececf1;
+    --surface: #17171d;
+    --surface-2: #121217;
+    --line: #2a2a33;
+    --muted: #9d9daa;
+
+    --shadow: 0 2px 10px rgba(0, 0, 0, .5);
+    --shadow-lift: 0 18px 40px -18px rgba(0, 0, 0, .75);
+  }
+}
+
+/* Colour is a preference, not a layout change: nothing should slide. */
+body, .section, .card, .table, .station, .contact-card, .faq, .steps li {
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, .section, .card, .table, .station, .contact-card, .faq, .steps li {
+    transition: none;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -34,8 +92,8 @@ body {
   font-family: var(--font);
   font-size: 17px;          /* generous: used outdoors, often one-handed */
   line-height: 1.6;
-  color: var(--ink);
-  background: var(--white);
+  color: var(--page-ink);
+  background: var(--page);
 
   /* clip, not hidden. overflow-x: hidden turns body into a scroll container,
      which is what stops the sticky header sticking in some browsers. clip
@@ -171,6 +229,57 @@ img { max-width: 100%; display: block; }
 .site-nav a.is-current::after { transform: scaleX(1); }
 
 .header-cta { flex: 0 0 auto; }
+
+/* Colour-mode button. It lives in the header, which is black in both themes,
+   so it is styled against black rather than against the page tokens. */
+.theme-toggle {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  color: #d6d6de;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--yellow);
+  border-color: rgba(255, 212, 0, .45);
+  background: rgba(255, 212, 0, .12);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.theme-icon {
+  grid-area: 1 / 1;      /* both icons stack; only one is ever shown */
+  width: 19px;
+  height: 19px;
+}
+
+/* Show the icon for the mode the button switches TO, so it reads as an
+   action rather than as a status light. */
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: block; }
+
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle { transition: none; }
+}
 
 /* The nav has 11 items — let it scroll sideways rather than wrap into a mess. */
 @media (max-width: 1180px) {
@@ -473,10 +582,10 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   gap: 10px;
   padding: 13px 23px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--white);
-  color: var(--ink);
+  background: var(--surface);
+  color: var(--page-ink);
   font-family: inherit;
   font-size: 16px;
   font-weight: 700;
@@ -553,8 +662,8 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Sections ---------- */
 
-.section { position: relative; padding: 74px 20px; background: var(--white); }
-.section.alt { background: var(--grey-50); }
+.section { position: relative; padding: 74px 20px; background: var(--page); }
+.section.alt { background: var(--surface-2); }
 
 .section.dark {
   background: var(--black);
@@ -614,7 +723,7 @@ img { max-width: 100%; display: block; }
 .body-text.light { color: var(--dim); }
 .wrap-narrow.center .body-text { margin-left: auto; margin-right: auto; }
 
-.muted-text { color: var(--grey-500); font-size: 15px; }
+.muted-text { color: var(--muted); font-size: 15px; }
 
 .accent-link { color: var(--yellow); }
 
@@ -627,9 +736,9 @@ img { max-width: 100%; display: block; }
 .card {
   position: relative;
   padding: 27px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--shadow);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
@@ -720,9 +829,9 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 15px;
   padding: 18px 21px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--white);
+  background: var(--surface);
   font-weight: 600;
   transition: border-color .18s ease, transform .18s ease;
 }
@@ -1174,8 +1283,8 @@ img { max-width: 100%; display: block; }
 .chart { width: 100%; min-width: 620px; height: auto; }
 .chart .bar { fill: var(--yellow); transition: fill .15s ease; }
 .chart .bar:hover { fill: var(--yellow-deep); }
-.chart .chart-axis { stroke: var(--grey-200); stroke-width: 1; }
-.chart .chart-label { fill: var(--grey-500); font-size: 11px; font-family: var(--font); }
+.chart .chart-axis { stroke: var(--line); stroke-width: 1; }
+.chart .chart-label { fill: var(--muted); font-size: 11px; font-family: var(--font); }
 
 .table-wrap { overflow-x: auto; margin-bottom: 18px; }
 .table-wrap .table { min-width: 520px; }
@@ -1202,10 +1311,10 @@ img { max-width: 100%; display: block; }
 .ai-answer {
   margin-top: 20px;
   padding: 20px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-left: 4px solid var(--yellow);
   border-radius: var(--radius);
-  background: var(--grey-50);
+  background: var(--surface-2);
 }
 
 .ai-reply { margin: 0; font-size: 17px; white-space: pre-wrap; }
@@ -1225,8 +1334,8 @@ img { max-width: 100%; display: block; }
   margin: 0 0 10px;
   padding: 11px 13px;
   border-radius: 10px;
-  background: var(--white);
-  color: var(--grey-500);
+  background: var(--surface);
+  color: var(--muted);
   font-size: 13.5px;
 }
 
@@ -1236,9 +1345,9 @@ img { max-width: 100%; display: block; }
 /* ---------- FAQ ---------- */
 
 .faq {
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--white);
+  background: var(--surface);
   margin-bottom: 10px;
   overflow: hidden;
   transition: border-color .18s ease;
@@ -1280,8 +1389,8 @@ img { max-width: 100%; display: block; }
   width: 100%;
   border-collapse: collapse;
   margin: 8px 0 16px;
-  background: var(--white);
-  border: 1px solid var(--grey-200);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -1289,7 +1398,7 @@ img { max-width: 100%; display: block; }
 .table caption {
   caption-side: top;
   padding-bottom: 12px;
-  color: var(--grey-500);
+  color: var(--muted);
   font-size: 15px;
   text-align: left;
 }
@@ -1297,7 +1406,7 @@ img { max-width: 100%; display: block; }
 .table th, .table td {
   padding: 14px 18px;
   text-align: left;
-  border-bottom: 1px solid var(--grey-200);
+  border-bottom: 1px solid var(--line);
 }
 
 .table thead th {
@@ -1319,9 +1428,9 @@ img { max-width: 100%; display: block; }
 .manual {
   margin-bottom: 22px;
   padding: 19px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--grey-50);
+  background: var(--surface-2);
 }
 
 .manual label { display: block; margin-bottom: 10px; font-weight: 700; font-size: 15px; }
@@ -1331,12 +1440,12 @@ img { max-width: 100%; display: block; }
 select {
   flex: 1 1 200px;
   padding: 12px 14px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: var(--white);
+  background: var(--surface);
   font-family: inherit;
   font-size: 16px;
-  color: var(--ink);
+  color: var(--page-ink);
 }
 
 .filter-row { margin-bottom: 18px; }
@@ -1351,9 +1460,9 @@ select {
   align-items: flex-start;
   gap: 16px;
   padding: 21px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--shadow);
   transition: transform .18s ease, box-shadow .18s ease;
 }
@@ -1383,7 +1492,7 @@ select {
 
 .station-body { flex: 1 1 auto; min-width: 0; }
 .station-name { margin: 0 0 3px; font-size: 18px; font-weight: 800; letter-spacing: -.015em; }
-.station-address { margin: 0 0 13px; font-size: 14px; color: var(--grey-500); }
+.station-address { margin: 0 0 13px; font-size: 14px; color: var(--muted); }
 .station-facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 15px; }
 .fact { display: inline-flex; align-items: center; gap: 6px; }
 .fact strong { font-weight: 800; }
@@ -1392,14 +1501,14 @@ select {
 .pill { display: inline-block; padding: 4px 11px; border-radius: 999px; font-size: 13px; font-weight: 700; }
 .pill-ok { background: rgba(34, 197, 94, .15); color: #15803d; }
 .pill-full { background: rgba(239, 68, 68, .12); color: #b91c1c; }
-.pill-offline { background: var(--grey-200); color: var(--grey-500); }
+.pill-offline { background: var(--line); color: var(--muted); }
 
 .empty {
   padding: 36px 20px;
-  border: 1px dashed var(--grey-200);
+  border: 1px dashed var(--line);
   border-radius: var(--radius);
   text-align: center;
-  color: var(--grey-500);
+  color: var(--muted);
 }
 
 /* ---------- Contact ---------- */
@@ -1409,9 +1518,9 @@ select {
 .contact-card {
   display: block;
   padding: 23px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--shadow);
   text-decoration: none;
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
@@ -1422,7 +1531,7 @@ select {
 .contact-label {
   display: block;
   margin-bottom: 4px;
-  color: var(--grey-500);
+  color: var(--muted);
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .13em;
@@ -1437,16 +1546,16 @@ select {
 .field { display: grid; gap: 7px; }
 .field-row { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .field label { font-weight: 700; font-size: 15px; }
-.optional { color: var(--grey-500); font-weight: 500; }
+.optional { color: var(--muted); font-weight: 500; }
 
 .field input, .field textarea, .field select {
   padding: 13px 15px;
-  border: 1px solid var(--grey-200);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: var(--white);
+  background: var(--surface);
   font-family: inherit;
   font-size: 16px;
-  color: var(--ink);
+  color: var(--page-ink);
 }
 
 .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible {

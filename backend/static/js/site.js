@@ -81,3 +81,62 @@
 
   sections.forEach(function (section) { spy.observe(section); });
 })();
+
+/* ---------- Colour mode ----------
+
+   The theme itself is applied by an inline script in <head>, before the page
+   paints. This only wires up the button and remembers the choice.
+
+   Three states, not two: "dark", "light", and no stored preference at all,
+   which follows the device. Once someone presses the button they have made a
+   choice, and it outranks the device from then on. */
+(function () {
+  var toggle = document.querySelector(".theme-toggle");
+  if (!toggle) return;
+
+  var root = document.documentElement;
+
+  function devicePrefersDark() {
+    return window.matchMedia
+      && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function currentlyDark() {
+    var chosen = root.getAttribute("data-theme");
+    if (chosen === "dark") return true;
+    if (chosen === "light") return false;
+    return devicePrefersDark();
+  }
+
+  function describe() {
+    var dark = currentlyDark();
+    // The label says what the button will DO, which is what a screen reader
+    // user needs; aria-pressed says what the page currently IS.
+    toggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    toggle.setAttribute("aria-pressed", dark ? "true" : "false");
+  }
+
+  toggle.addEventListener("click", function () {
+    var next = currentlyDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("jt-theme", next);
+    } catch (e) {
+      /* Refused storage only costs persistence — the page still switches. */
+    }
+    describe();
+  });
+
+  // Someone who has never pressed the button keeps following their device,
+  // even if they change it while the page is open.
+  if (window.matchMedia) {
+    var watch = window.matchMedia("(prefers-color-scheme: dark)");
+    var onChange = function () {
+      if (!root.getAttribute("data-theme")) describe();
+    };
+    if (watch.addEventListener) watch.addEventListener("change", onChange);
+    else if (watch.addListener) watch.addListener(onChange);
+  }
+
+  describe();
+})();

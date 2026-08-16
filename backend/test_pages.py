@@ -86,6 +86,38 @@ for asset in ["/static/css/styles.css", "/static/js/return.js",
 status, _ = fetch("/this-page-does-not-exist")
 check("unknown page returns 404", status == 404, f"HTTP {status}")
 
+# --- Colour mode -----------------------------------------------------------
+# The switch is easy to break silently: the page still renders, it just stops
+# remembering, or flashes the wrong theme on every load.
+
+status, home = fetch("/")
+check("theme toggle is on the page", 'class="theme-toggle"' in home)
+check("toggle says what it does", 'aria-label="Switch to' in home)
+check("toggle reports current state", 'aria-pressed=' in home)
+
+# The theme must be applied before the stylesheet paints, which means inline
+# in <head>. Moved to an external file, every load flashes white first.
+head = home.split("</head>")[0]
+check("theme applied inline in <head>", "jt-theme" in head)
+check("theme set before <body>", "data-theme" in head)
+
+status, css = fetch("/static/css/styles.css")
+check("dark theme is defined", '[data-theme="dark"]' in css)
+check("device preference respected", "prefers-color-scheme: dark" in css)
+# Without the :not() guard, a light choice on a dark phone gets overridden.
+check("explicit light beats device dark", ':not([data-theme="light"])' in css)
+
+for token in ["--page:", "--page-ink:", "--surface:", "--surface-2:",
+              "--line:", "--muted:"]:
+    check(f"token {token.rstrip(':')} defined", token in css)
+
+# The QR needs a white plate in BOTH themes — a code on a dark background
+# does not scan, and that is the one thing on the site a phone must read.
+qr_rule = css.split(".qr-code {")[1].split("}")[0] if ".qr-code {" in css else ""
+check("QR plate stays white in dark mode",
+      "var(--white)" in qr_rule and "var(--surface)" not in qr_rule,
+      qr_rule.strip().replace("\n", " ")[:60])
+
 print("=" * 60)
 print(f"  {passed} passed, {failed} failed\n")
 raise SystemExit(1 if failed else 0)
