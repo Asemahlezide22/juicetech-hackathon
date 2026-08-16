@@ -154,6 +154,21 @@ def clear_stale_vite_temp() -> None:
         print(f"  Warning: could not remove {stale}: {exc}")
 
 
+def port_in_use(port: int) -> bool:
+    """True if something is already listening on this port.
+
+    Without this check, uvicorn dies with "WinError 10013: An attempt was made
+    to access a socket in a way forbidden by its access permissions" — which
+    sounds like a permissions problem and is really just a second copy of the
+    server still running.
+    """
+    import socket
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(0.5)
+        return s.connect_ex(("127.0.0.1", port)) == 0
+
+
 def lan_address() -> str | None:
     """This machine's address on the local network, or None if offline.
 
@@ -176,6 +191,16 @@ def main() -> int:
     with_react = "--with-react" in sys.argv
     python = find_backend_python()
 
+    if port_in_use(API_PORT):
+        sys.exit(
+            f"\nPort {API_PORT} is already in use — Juice Tech is probably\n"
+            "already running in another window or terminal.\n\n"
+            f"  Just open it:  http://localhost:{API_PORT}\n\n"
+            "Or stop the other copy first. To find and stop it on Windows:\n"
+            f"    netstat -ano | findstr :{API_PORT}\n"
+            "    taskkill /F /PID <the number in the last column>\n"
+        )
+
     processes: list[tuple[str, subprocess.Popen]] = []
 
     print("\n" + "=" * 58)
@@ -188,8 +213,14 @@ def main() -> int:
     # on this network can reach it — which is the point at a demo, and not
     # something to leave running on a café connection.
     api = subprocess.Popen(
+        # --proxy-headers lets the station QR encode the right address when the
+        # site is reached through a tunnel: without it every URL the server
+        # builds says "http", so a code scanned from an https link points at a
+        # scheme the tunnel does not serve. A tunnel connects from 127.0.0.1,
+        # which uvicorn trusts by default — so no --forwarded-allow-ips, whose
+        # "*" Windows expands into a directory listing before uvicorn sees it.
         [str(python), "-m", "uvicorn", "app.main:app", "--reload",
-         "--host", "0.0.0.0", "--port", str(API_PORT)],
+         "--host", "0.0.0.0", "--port", str(API_PORT), "--proxy-headers"],
         cwd=BACKEND,
     )
     processes.append(("Website", api))
