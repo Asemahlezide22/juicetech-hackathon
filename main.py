@@ -90,8 +90,7 @@ def find_backend_python() -> Path:
 
         sys.exit(
             "Could not create backend/.venv.\n"
-            f"{stderr}\n\n"
-            "Check that Python 3.10+ is installed and on your PATH."
+            f"{stderr}\n\n"            "Check that Python 3.10+ is installed and on your PATH."
         )
 
     python = venv_python()
