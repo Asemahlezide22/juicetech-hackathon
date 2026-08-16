@@ -118,6 +118,32 @@ check("QR plate stays white in dark mode",
       "var(--white)" in qr_rule and "var(--surface)" not in qr_rule,
       qr_rule.strip().replace("\n", " ")[:60])
 
+# --- Responsive navigation -------------------------------------------------
+
+check("menu button exists", 'class="nav-toggle"' in home)
+check("menu button says what it does", 'aria-label="Open menu"' in home)
+check("menu button reports open state", 'aria-expanded="false"' in home)
+# Without aria-controls the button and the menu are unrelated to a screen reader.
+check("menu button points at the nav", 'aria-controls="site-nav"' in home)
+check("nav has the id the button names", 'id="site-nav"' in home)
+
+check("phone breakpoint defined", "max-width: 860px" in css)
+check("menu button hidden by default", ".nav-toggle {" in css and "display: none" in css)
+check("nav stacks on phones", "flex-direction: column" in css)
+
+status, js = fetch("/static/js/site.js")
+check("menu script present", "nav-toggle" in js)
+check("Escape closes the menu", 'key === "Escape"' in js)
+# The matchMedia change event did not fire under test; resize is the fallback
+# that stops hidden="" being left on a nav that is visibly a row.
+check("resize is handled too", 'addEventListener("resize"' in js)
+check("script breakpoint matches the CSS", "max-width: 860px" in js)
+
+# The nav must be a plain list until the script collapses it, or a phone that
+# fails to load site.js gets a dead button and no way to reach the site.
+check("nav is not hidden in the HTML itself",
+      'id="site-nav"' in home and "<nav class=\"site-nav is-pill\" id=\"site-nav\"" in home)
+
 print("=" * 60)
 print(f"  {passed} passed, {failed} failed\n")
 raise SystemExit(1 if failed else 0)

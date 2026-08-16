@@ -42,7 +42,12 @@
     <span class="logo-text">JUICE <strong>TECH</strong></span>
   </a>
 
-  <nav class="site-nav is-pill" aria-label="Main">
+  <button class="nav-toggle" type="button"
+          aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+    <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+
+  <nav class="site-nav is-pill" id="site-nav" aria-label="Main">
     {% for item in nav %}
       <a href="{{ item.url }}"{% if item.url == current_url %} class="is-current" aria-current="page"{% endif %}>{{ item.label }}</a>
     {% endfor %}

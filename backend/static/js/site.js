@@ -140,3 +140,86 @@
 
   describe();
 })();
+
+/* ---------- Mobile menu ----------
+
+   The nav is a plain visible list until this runs. Only once we know the
+   script is alive do we collapse it behind a button — otherwise a phone that
+   fails to load site.js would show a menu button that does nothing and no way
+   to reach the rest of the site. */
+(function () {
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.getElementById("site-nav");
+  if (!toggle || !nav) return;
+
+  // Matches the CSS breakpoint. If these two ever disagree, the nav hides on
+  // a screen with no button to bring it back.
+  var mobile = window.matchMedia("(max-width: 860px)");
+
+  function open() {
+    nav.hidden = false;
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close menu");
+  }
+
+  function close() {
+    nav.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open menu");
+  }
+
+  function isOpen() {
+    return toggle.getAttribute("aria-expanded") === "true";
+  }
+
+  function apply() {
+    if (mobile.matches) {
+      close();
+    } else {
+      // On a wide screen the nav is a row and must never stay hidden — a
+      // phone rotated to landscape, or a window dragged wider, would
+      // otherwise lose its navigation entirely.
+      nav.hidden = false;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+    }
+  }
+
+  toggle.addEventListener("click", function () {
+    isOpen() ? close() : open();
+  });
+
+  // A tap on a link navigates; closing first stops the menu flashing over
+  // the top of the new page on same-page anchors.
+  nav.addEventListener("click", function (event) {
+    if (event.target.closest("a") && mobile.matches) close();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && isOpen()) {
+      close();
+      toggle.focus();     // don't strand focus inside a menu that just closed
+    }
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!isOpen() || !mobile.matches) return;
+    if (!event.target.closest(".site-header")) close();
+  });
+
+  if (mobile.addEventListener) mobile.addEventListener("change", apply);
+  else if (mobile.addListener) mobile.addListener(apply);
+
+  /* And again on resize, because the matchMedia change event is not
+     dependable everywhere — under test it did not fire at all. Missing it
+     leaves hidden="" on a nav that is visibly a row: it looks perfectly
+     fine, and screen readers skip the site's entire navigation. Cheap
+     insurance against a fault nobody would catch by looking at it. */
+  var pending;
+  window.addEventListener("resize", function () {
+    clearTimeout(pending);
+    pending = setTimeout(apply, 120);
+  });
+
+  apply();
+})();

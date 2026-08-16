@@ -281,8 +281,50 @@ img { max-width: 100%; display: block; }
   .theme-toggle { transition: none; }
 }
 
-/* The nav has 11 items — let it scroll sideways rather than wrap into a mess. */
-@media (max-width: 1180px) {
+/* --- Menu button. Hidden entirely on wide screens, where the nav is a row. */
+.nav-toggle {
+  display: none;          /* the media query below turns it on */
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .06);
+  color: #d6d6de;
+  cursor: pointer;
+}
+
+.nav-toggle:hover {
+  color: var(--yellow);
+  border-color: rgba(255, 212, 0, .45);
+  background: rgba(255, 212, 0, .12);
+}
+
+.nav-toggle:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+.nav-bars {
+  display: grid;
+  gap: 4px;
+  width: 18px;
+}
+
+.nav-bars span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+/* Open state: the bars become a cross, so the button says "close". */
+.nav-toggle[aria-expanded="true"] .nav-bars span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-bars span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-bars span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* --- Between the full row and the phone menu, the row just gets tighter. */
+@media (max-width: 1180px) and (min-width: 861px) {
   .site-nav {
     order: 3;
     width: 100%;
@@ -292,6 +334,54 @@ img { max-width: 100%; display: block; }
     scrollbar-width: thin;
   }
   .site-nav a { white-space: nowrap; }
+}
+
+/* --- Phones and small tablets: a real menu.
+
+   The sideways-scrolling strip this replaces was technically responsive and
+   practically useless — half the site sat off the right edge with nothing to
+   suggest it was there. A menu that opens is discoverable; a scroll strip is
+   only discoverable to someone who already knows to swipe it. */
+@media (max-width: 860px) {
+  .nav-toggle { display: inline-grid; }
+
+  .site-nav {
+    order: 4;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, .09);
+  }
+
+  /* Closed is the default, so a phone with no JavaScript at all still gets
+     the full list rather than a button that does nothing. The script adds
+     [hidden] on load; without it, this simply never applies. */
+  .site-nav[hidden] { display: none; }
+
+  .site-nav a {
+    padding: 12px 4px;        /* 44px tall — a finger, not a cursor */
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  /* The sliding underline is a pointer affordance and reads as a stray line
+     in a stacked list. Selection is shown with the row itself instead. */
+  .site-nav a::after { display: none; }
+
+  .site-nav a.is-current {
+    background: rgba(255, 212, 0, .12);
+    padding-left: 12px;
+  }
+
+  .header-cta { order: 2; }
+}
+
+/* Very narrow phones: the logo wordmark is the first thing that can go. */
+@media (max-width: 380px) {
+  .logo-text { font-size: 17px; }
+  .header-cta { padding-left: 13px; padding-right: 13px; }
 }
 
 /* ---------- Hero ---------- */
