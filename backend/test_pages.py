@@ -108,8 +108,33 @@ check("device preference respected", "prefers-color-scheme: dark" in css)
 check("explicit light beats device dark", ':not([data-theme="light"])' in css)
 
 for token in ["--page:", "--page-ink:", "--surface:", "--surface-2:",
-              "--line:", "--muted:"]:
+              "--line:", "--muted:",
+              # The bands — header, hero, dark sections, footer, chat panel.
+              "--band:", "--band-ink:", "--band-dim:", "--header-bg:",
+              "--nav-ink:", "--veil:", "--veil-line:",
+              # Gold as text has to darken on a light page or it vanishes.
+              "--accent-text:", "--green-text:"]:
     check(f"token {token.rstrip(':')} defined", token in css)
+
+# Light mode must change the WHOLE page, not just the pale parts between the
+# bands. If the hero still reads var(--black) the toggle looks half-broken.
+for band_rule, name in [(".hero {", "hero"), (".site-footer {", "footer"),
+                        (".section.dark {", "dark section")]:
+    body = css.split(band_rule)[1].split("}")[0] if band_rule in css else ""
+    check(f"{name} follows the theme",
+          "var(--band)" in body and "var(--black)" not in body,
+          body.strip().replace("\n", " ")[:60])
+
+# Every theme block must define the same tokens, or switching leaves some
+# colours behind from the other theme.
+light_block = css.split(":root {")[1].split("}")[0]
+dark_block = css.split(':root[data-theme="dark"] {')[1].split("}")[0]
+media_block = css.split(':root:not([data-theme="light"]) {')[1].split("}")[0]
+themed = [line.split(":")[0].strip() for line in dark_block.split(";")
+          if line.strip().startswith("--")]
+for name in themed:
+    check(f"{name} defined in all three blocks",
+          name in light_block and name in media_block)
 
 # The QR needs a white plate in BOTH themes — a code on a dark background
 # does not scan, and that is the one thing on the site a phone must read.
